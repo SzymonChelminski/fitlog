@@ -1,8 +1,6 @@
 import "./globals.css"
-import { Inter, Geist } from "next/font/google"
-import { cn } from "@/lib/utils";
-
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+import { Inter } from "next/font/google"
+import { TooltipProvider } from "@/components/ui/tooltip"
 
 const inter = Inter({
   subsets: ['latin'],
@@ -16,8 +14,12 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={cn(inter.className, "font-sans", geist.variable)}>
-      <body>{children}</body>
+    <html lang="en" className={inter.className}>
+      <body>
+        <TooltipProvider>
+            {children}
+        </TooltipProvider>
+       </body>
     </html>
   )
 }
