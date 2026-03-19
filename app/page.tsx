@@ -1,9 +1,7 @@
-import Navbar from "@/components/Navbar";
-
-export default async function Home() {
+export default function Home() {
   return (
-    <main className="bg-black">
-      <Navbar />
-    </main>
-  );
+    <h1 className=" font-bold underline">
+      Hello world!
+    </h1>
+  )
 }
