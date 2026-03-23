@@ -3,12 +3,11 @@ import { Bebas_Neue } from 'next/font/google';
 import { getUser } from '@/lib/supabase/auth';
 
 // Icons
-import { FaBars, FaDatabase } from 'react-icons/fa6';
+import { FaBars } from 'react-icons/fa6';
 import { GiWeightLiftingUp } from 'react-icons/gi';
 import { IoLogIn } from 'react-icons/io5';
 import { RiDashboardFill } from 'react-icons/ri';
 import { IoMdSettings } from 'react-icons/io';
-import { FaUser } from 'react-icons/fa6';
 import { FaUserCircle } from 'react-icons/fa';
 
 // Shadcn UI
@@ -99,20 +98,20 @@ export default async function SideBar() {
             )}
           </section>
           <nav className="text-custom-text-main/80 flex flex-col justify-center gap-3">
-            <Link href={'/'} className="flex items-center gap-4 text-3xl">
-              <RiDashboardFill size={30} />
+            <Link href={'/'} className="flex items-center gap-4 text-2xl">
+              <RiDashboardFill size={25} />
               <p>Dashboard</p>
             </Link>
-            <Link href={'/'} className="flex items-center gap-4 text-3xl">
-              <FaUserCircle size={30} />
+            <Link href={'/'} className="flex items-center gap-4 text-2xl">
+              <FaUserCircle size={25} />
               <p>My Profile</p>
             </Link>
-            <Link href={'/'} className="flex items-center gap-4 text-3xl">
-              <GiWeightLiftingUp size={30} />
+            <Link href={'/'} className="flex items-center gap-4 text-2xl">
+              <GiWeightLiftingUp size={25} />
               <p>My workouts</p>
             </Link>
-            <Link href={'/'} className="flex items-center gap-4 text-3xl">
-              <IoMdSettings size={30} />
+            <Link href={'/'} className="flex items-center gap-4 text-2xl">
+              <IoMdSettings size={25} />
               <p>Settings</p>
             </Link>
           </nav>
@@ -133,7 +132,7 @@ export default async function SideBar() {
                     Log In
                   </Button>
                 </Link>
-                <Link href={'/'}>
+                <Link href={'/register'}>
                   <Button
                     size="lg"
                     variant="outline"

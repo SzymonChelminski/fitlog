@@ -1,25 +1,27 @@
-import "./globals.css"
-import { Inter } from "next/font/google"
-import { TooltipProvider } from "@/components/ui/tooltip"
+import './globals.css';
+import { Inter } from 'next/font/google';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import Navbar from '@/components/Navbar';
 
 const inter = Inter({
   subsets: ['latin'],
   weight: ['300', '400', '500', '700', '900'],
   display: 'swap',
-})
+});
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en" className={inter.className}>
-      <body>
+      <body className="flex min-h-dvh flex-col">
         <TooltipProvider>
-            {children}
+          <Navbar />
+          {children}
         </TooltipProvider>
-       </body>
+      </body>
     </html>
-  )
+  );
 }
