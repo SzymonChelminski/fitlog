@@ -25,12 +25,20 @@ import {
 } from '@/components/ui/input-group';
 import { Progress } from '@/components/ui/progress';
 
+import { Badge } from '@/components/ui/badge';
+
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 import { IoMdMale } from 'react-icons/io';
 import { IoMdFemale } from 'react-icons/io';
+import { FaRulerHorizontal } from 'react-icons/fa';
 import { GoCircle } from 'react-icons/go';
+import { IoMdInformationCircleOutline } from 'react-icons/io';
+import { FaDumbbell } from 'react-icons/fa6';
+import { PiSpeedometerFill } from 'react-icons/pi';
+import { MdBolt } from 'react-icons/md';
+import { GiMeditation } from 'react-icons/gi';
 
 export default function RegisterPage() {
   return (
@@ -192,7 +200,155 @@ export default function RegisterPage() {
                 </form>
               </section>
             </CarouselItem>
-            <CarouselItem>3</CarouselItem>
+            <CarouselItem>
+              <section className="flex flex-col gap-6">
+                <section className="flex flex-col gap-2">
+                  <h2 className="text-custom-secondary font-bold">
+                    BIOMETRICS
+                  </h2>
+                  <h1 className="text-custom-text-main text-4xl font-medium">
+                    Physical Profile
+                  </h1>
+                  <h3 className="text-custom-text-muted font-light">
+                    Precision is the foundation of progress. Provide your
+                    current measurements for accurate metabolic tracking.
+                  </h3>
+                </section>
+                <form className="">
+                  <Field>
+                    <FieldLabel className="text-custom-text-muted/60">
+                      STATURE
+                    </FieldLabel>
+                    <InputGroup className="border-custom-text-muted/40 rounded-none border-b">
+                      <InputGroupInput
+                        type="number"
+                        placeholder="000"
+                        className="placeholder:text-custom-text-muted/20 [appearance:textfield] duration-250 ease-in [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                      />
+                      <InputGroupAddon align="inline-end">CM</InputGroupAddon>
+                    </InputGroup>
+                    <FieldLabel className="text-custom-text-muted/60">
+                      BODY MASS
+                    </FieldLabel>
+                    <InputGroup className="border-custom-text-muted/40 rounded-none border-b">
+                      <InputGroupInput
+                        type="number"
+                        placeholder="00.0"
+                        className="placeholder:text-custom-text-muted/20 [appearance:textfield] duration-250 ease-in [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                      />
+                      <InputGroupAddon align="inline-end">KG</InputGroupAddon>
+                    </InputGroup>
+                  </Field>
+                </form>
+                <Badge className="bg-custom-card-bg flex items-start gap-2 rounded-lg p-4 whitespace-normal">
+                  <span className="size-fit pt-1">
+                    <IoMdInformationCircleOutline size={20} />
+                  </span>
+                  <p className="text-custom-text-muted">
+                    <span className="text-custom-text-main h-fit text-lg">
+                      Calibration Note
+                    </span>
+                    <br />
+                    These values will calibrate your initial calorie expenditure
+                    algorithms. You can update these anytime in your dashboard
+                    as your body composition evolves.
+                  </p>
+                </Badge>
+              </section>
+            </CarouselItem>
+            <CarouselItem>
+              <section className="flex flex-col gap-6">
+                <section className="flex flex-col gap-2">
+                  <h2 className="text-custom-secondary font-bold">STRATEGY</h2>
+                  <h1 className="text-custom-text-main text-4xl font-medium">
+                    Define Your Goal
+                  </h1>
+                  <h3 className="text-custom-text-muted font-light">
+                    Knowing where you’re going is half the battle. Start with a
+                    clear destination to keep your momentum high.
+                  </h3>
+                </section>
+                <form>
+                  <RadioGroup className="grid grid-cols-2">
+                    <FieldLabel className="bg-custom-text-muted/5 group/radio has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-primary flex-1 p-2 duration-250 ease-in has-data-[state=checked]:border has-data-[state=unchecked]:border-transparent">
+                      <Field>
+                        <FieldContent className="grid place-items-center gap-3">
+                          <FieldTitle className="bg-custom-text-muted/20 group-has-data-[state=checked]/radio:bg-custom-primary group-has-data-[state=checked]/radio:text-custom-text-main text-custom-text-muted mr-auto rounded-sm p-2 duration-300 ease-in">
+                            <FaDumbbell className="text-2xl" />
+                          </FieldTitle>
+                          <FieldDescription className="mr-auto font-medium">
+                            <span className="text-custom-text-muted text-lg">
+                              Muscle Gain
+                            </span>{' '}
+                            <br />
+                            <span className="text-xs">HYPERTROPHY FOCUS</span>
+                          </FieldDescription>
+                        </FieldContent>
+                        <RadioGroupItem
+                          value="muscle_gain"
+                          className="hidden"
+                        />
+                      </Field>
+                    </FieldLabel>
+                    <FieldLabel className="bg-custom-text-muted/5 group/radio has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-primary flex-1 p-2 duration-250 ease-in has-data-[state=checked]:border has-data-[state=unchecked]:border-transparent">
+                      <Field>
+                        <FieldContent className="grid place-items-center gap-3">
+                          <FieldTitle className="bg-custom-text-muted/20 group-has-data-[state=checked]/radio:bg-custom-primary group-has-data-[state=checked]/radio:text-custom-text-main text-custom-text-muted mr-auto rounded-sm p-2 duration-300 ease-in">
+                            <PiSpeedometerFill className="text-2xl" />
+                          </FieldTitle>
+                          <FieldDescription className="mr-auto font-medium">
+                            <span className="text-custom-text-muted text-lg">
+                              Weight Loss
+                            </span>{' '}
+                            <br />
+                            <span className="text-xs">METABOLIC FOCUS</span>
+                          </FieldDescription>
+                        </FieldContent>
+                        <RadioGroupItem
+                          value="weight_losss"
+                          className="hidden"
+                        />
+                      </Field>
+                    </FieldLabel>
+                    <FieldLabel className="bg-custom-text-muted/5 group/radio has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-primary flex-1 p-2 has-data-[state=checked]:border has-data-[state=unchecked]:border-transparent">
+                      <Field>
+                        <FieldContent className="grid place-items-center gap-3">
+                          <FieldTitle className="bg-custom-text-muted/20 group-has-data-[state=checked]/radio:bg-custom-primary group-has-data-[state=checked]/radio:text-custom-text-main text-custom-text-muted mr-auto rounded-sm p-2 duration-300 ease-in">
+                            <MdBolt className="text-2xl" />
+                          </FieldTitle>
+                          <FieldDescription className="mr-auto font-medium">
+                            <span className="text-custom-text-muted text-lg">
+                              Athleticsm
+                            </span>
+                            <br />
+                            <span className="text-xs">POWER & AGILITY</span>
+                          </FieldDescription>
+                        </FieldContent>
+                        <RadioGroupItem value="athleticsm" className="hidden" />
+                      </Field>
+                    </FieldLabel>
+                    <FieldLabel className="bg-custom-text-muted/5 group/radio has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-primary flex-1 p-2 has-data-[state=checked]:border has-data-[state=unchecked]:border-transparent">
+                      <Field>
+                        <FieldContent className="grid place-items-center gap-3">
+                          <FieldTitle className="bg-custom-text-muted/20 group-has-data-[state=checked]/radio:bg-custom-primary group-has-data-[state=checked]/radio:text-custom-text-main text-custom-text-muted mr-auto rounded-sm p-2 duration-300 ease-in">
+                            <GiMeditation className="text-2xl" />
+                          </FieldTitle>
+                          <FieldDescription className="mr-auto font-medium">
+                            <span className="text-custom-text-muted text-lg">
+                              Longevity
+                            </span>{' '}
+                            <br />
+                            <span className="text-xs">MOBILITY FOCUS</span>
+                          </FieldDescription>
+                        </FieldContent>
+                        <RadioGroupItem value="longevity" className="hidden" />
+                      </Field>
+                    </FieldLabel>
+                  </RadioGroup>
+                </form>
+              </section>
+            </CarouselItem>
+            <CarouselItem></CarouselItem>
           </CarouselContent>
           {/* Navigation */}
           <section className="mt-6 flex justify-center gap-4">
