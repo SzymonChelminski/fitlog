@@ -40,6 +40,13 @@ import { PiSpeedometerFill } from 'react-icons/pi';
 import { MdBolt } from 'react-icons/md';
 import { GiMeditation } from 'react-icons/gi';
 
+import { Rubik } from 'next/font/google';
+
+const rubik = Rubik({
+  subsets: ['latin'],
+  weight: ['600', '700', '800'],
+});
+
 export default function RegisterPage() {
   return (
     <>
@@ -156,11 +163,11 @@ export default function RegisterPage() {
                       <FieldLegend className="text-custom-text-muted/60 mt-4 w-full font-normal">
                         BIOLOGICAL GENDER
                       </FieldLegend>
-                      <FieldLabel className="bg-custom-text-muted/5 has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-secondary/60 flex-1 p-2 duration-250 ease-in has-data-[state=checked]:border has-data-[state=unchecked]:border-transparent">
+                      <FieldLabel className="bg-custom-text-muted/5 has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-secondary group/radio flex-1 p-2 duration-250 ease-in has-data-[state=checked]:border-4 has-data-[state=unchecked]:border-transparent">
                         <Field>
                           <FieldContent className="grid place-items-center gap-2">
                             <FieldTitle>
-                              <IoMdMale className="text-custom-text-muted text-xl" />
+                              <IoMdMale className="text-custom-text-muted group-has-data-[state=checked]/radio:text-custom-secondary text-xl" />
                             </FieldTitle>
                             <FieldDescription className="font-medium">
                               MALE
@@ -169,11 +176,11 @@ export default function RegisterPage() {
                           <RadioGroupItem value="male" className="hidden" />
                         </Field>
                       </FieldLabel>
-                      <FieldLabel className="bg-custom-text-muted/5 has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-secondary/60 flex-1 p-2 duration-250 ease-in has-data-[state=checked]:border has-data-[state=unchecked]:border-transparent">
+                      <FieldLabel className="bg-custom-text-muted/5 has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-secondary group/radio flex-1 p-2 duration-250 ease-in has-data-[state=checked]:border-4 has-data-[state=unchecked]:border-transparent">
                         <Field>
                           <FieldContent className="grid place-items-center gap-2">
                             <FieldTitle>
-                              <IoMdFemale className="text-custom-text-muted text-xl" />
+                              <IoMdFemale className="text-custom-text-muted group-has-data-[state=checked]/radio:text-custom-secondary text-xl" />
                             </FieldTitle>
                             <FieldDescription className="font-medium">
                               FEMALE
@@ -182,11 +189,11 @@ export default function RegisterPage() {
                           <RadioGroupItem value="female" className="hidden" />
                         </Field>
                       </FieldLabel>
-                      <FieldLabel className="bg-custom-text-muted/5 has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-secondary/60 flex-1 p-2 has-data-[state=checked]:border has-data-[state=unchecked]:border-transparent">
+                      <FieldLabel className="bg-custom-text-muted/5 group/radio has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-secondary flex-1 p-2 duration-250 ease-in has-data-[state=checked]:border-4 has-data-[state=unchecked]:border-transparent">
                         <Field>
                           <FieldContent className="grid place-items-center gap-2">
                             <FieldTitle>
-                              <FaRegCircle className="text-custom-text-muted text-xl" />
+                              <FaRegCircle className="text-custom-text-muted group-has-data-[state=checked]/radio:text-custom-secondary text-xl" />
                             </FieldTitle>
                             <FieldDescription className="font-medium">
                               OTHER
@@ -270,10 +277,10 @@ export default function RegisterPage() {
                 </section>
                 <form>
                   <RadioGroup className="grid grid-cols-2">
-                    <FieldLabel className="bg-custom-text-muted/5 group/radio has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-primary flex-1 p-2 duration-250 ease-in has-data-[state=checked]:border has-data-[state=unchecked]:border-transparent">
+                    <FieldLabel className="bg-custom-text-muted/5 group/radio has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-secondary flex-1 p-2 duration-250 ease-in has-data-[state=checked]:border-4 has-data-[state=unchecked]:border-transparent">
                       <Field>
                         <FieldContent className="grid place-items-center gap-3">
-                          <FieldTitle className="bg-custom-text-muted/20 group-has-data-[state=checked]/radio:bg-custom-primary group-has-data-[state=checked]/radio:text-custom-text-main text-custom-text-muted mr-auto rounded-sm p-2 duration-300 ease-in">
+                          <FieldTitle className="bg-custom-text-muted/20 group-has-data-[state=checked]/radio:bg-custom-secondary group-has-data-[state=checked]/radio:text-custom-text-main text-custom-text-muted mr-auto rounded-sm p-2 duration-300 ease-in">
                             <FaDumbbell className="text-2xl" />
                           </FieldTitle>
                           <FieldDescription className="mr-auto font-medium">
@@ -290,10 +297,10 @@ export default function RegisterPage() {
                         />
                       </Field>
                     </FieldLabel>
-                    <FieldLabel className="bg-custom-text-muted/5 group/radio has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-primary flex-1 p-2 duration-250 ease-in has-data-[state=checked]:border has-data-[state=unchecked]:border-transparent">
+                    <FieldLabel className="bg-custom-text-muted/5 group/radio has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-secondary flex-1 p-2 duration-250 ease-in has-data-[state=checked]:border-4 has-data-[state=unchecked]:border-transparent">
                       <Field>
                         <FieldContent className="grid place-items-center gap-3">
-                          <FieldTitle className="bg-custom-text-muted/20 group-has-data-[state=checked]/radio:bg-custom-primary group-has-data-[state=checked]/radio:text-custom-text-main text-custom-text-muted mr-auto rounded-sm p-2 duration-300 ease-in">
+                          <FieldTitle className="bg-custom-text-muted/20 group-has-data-[state=checked]/radio:bg-custom-secondary group-has-data-[state=checked]/radio:text-custom-text-main text-custom-text-muted mr-auto rounded-sm p-2 duration-300 ease-in">
                             <PiSpeedometerFill className="text-2xl" />
                           </FieldTitle>
                           <FieldDescription className="mr-auto font-medium">
@@ -310,10 +317,10 @@ export default function RegisterPage() {
                         />
                       </Field>
                     </FieldLabel>
-                    <FieldLabel className="bg-custom-text-muted/5 group/radio has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-primary flex-1 p-2 has-data-[state=checked]:border has-data-[state=unchecked]:border-transparent">
+                    <FieldLabel className="bg-custom-text-muted/5 group/radio has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-secondary flex-1 p-2 has-data-[state=checked]:border-4 has-data-[state=unchecked]:border-transparent">
                       <Field>
                         <FieldContent className="grid place-items-center gap-3">
-                          <FieldTitle className="bg-custom-text-muted/20 group-has-data-[state=checked]/radio:bg-custom-primary group-has-data-[state=checked]/radio:text-custom-text-main text-custom-text-muted mr-auto rounded-sm p-2 duration-300 ease-in">
+                          <FieldTitle className="bg-custom-text-muted/20 group-has-data-[state=checked]/radio:bg-custom-secondary group-has-data-[state=checked]/radio:text-custom-text-main text-custom-text-muted mr-auto rounded-sm p-2 duration-300 ease-in">
                             <MdBolt className="text-2xl" />
                           </FieldTitle>
                           <FieldDescription className="mr-auto font-medium">
@@ -327,16 +334,16 @@ export default function RegisterPage() {
                         <RadioGroupItem value="athleticsm" className="hidden" />
                       </Field>
                     </FieldLabel>
-                    <FieldLabel className="bg-custom-text-muted/5 group/radio has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-primary flex-1 p-2 has-data-[state=checked]:border has-data-[state=unchecked]:border-transparent">
+                    <FieldLabel className="bg-custom-text-muted/5 group/radio has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-secondary flex-1 p-2 has-data-[state=checked]:border-4 has-data-[state=unchecked]:border-transparent">
                       <Field>
                         <FieldContent className="grid place-items-center gap-3">
-                          <FieldTitle className="bg-custom-text-muted/20 group-has-data-[state=checked]/radio:bg-custom-primary group-has-data-[state=checked]/radio:text-custom-text-main text-custom-text-muted mr-auto rounded-sm p-2 duration-300 ease-in">
+                          <FieldTitle className="bg-custom-text-muted/20 group-has-data-[state=checked]/radio:bg-custom-secondary group-has-data-[state=checked]/radio:text-custom-text-main text-custom-text-muted mr-auto rounded-sm p-2 duration-300 ease-in">
                             <GiMeditation className="text-2xl" />
                           </FieldTitle>
                           <FieldDescription className="mr-auto font-medium">
                             <span className="text-custom-text-muted text-lg">
                               Longevity
-                            </span>{' '}
+                            </span>
                             <br />
                             <span className="text-xs">MOBILITY FOCUS</span>
                           </FieldDescription>
@@ -348,7 +355,104 @@ export default function RegisterPage() {
                 </form>
               </section>
             </CarouselItem>
-            <CarouselItem></CarouselItem>
+            <CarouselItem className="pr-4 pl-0">
+              <section className="flex flex-col items-center gap-6">
+                <section className="flex flex-col gap-2">
+                  <h2 className="text-custom-secondary font-bold">
+                    DATA CALIBRATION
+                  </h2>
+                  <h1 className="text-custom-text-main text-4xl font-medium">
+                    Training Experience
+                  </h1>
+                  <h3 className="text-custom-text-muted font-light">
+                    Select how long you have been training consistently to
+                    receive the most accurate performance data.
+                  </h3>
+                </section>
+                <form>
+                  <RadioGroup>
+                    <FieldLabel className="bg-custom-text-muted/5 has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-secondary duration-300 ease-in has-data-[state=checked]:border-4 has-data-[state=unchecked]:border-transparent">
+                      <Field>
+                        <FieldContent className="flex flex-row items-center">
+                          <FieldTitle className="p- flex flex-col gap-0 p-3">
+                            <span
+                              className={`text-custom-secondary text-2xl font-medium ${rubik.className}`}
+                            >
+                              0-1
+                            </span>
+                            <span className="text-custom-text-muted/60 text-xs">
+                              YEARS
+                            </span>
+                          </FieldTitle>
+                          <FieldDescription className="flex flex-col">
+                            <span className="text-custom-text-muted text-xl">
+                              Beginner
+                            </span>
+                            <span className="text-custom-text-muted/60">
+                              Focusing on form and habit building.
+                            </span>
+                          </FieldDescription>
+                        </FieldContent>
+                        <RadioGroupItem value="beginner" className="hidden" />
+                      </Field>
+                    </FieldLabel>
+                    <FieldLabel className="bg-custom-text-muted/5 has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-secondary duration-300 ease-in has-data-[state=checked]:border-4 has-data-[state=unchecked]:border-transparent">
+                      <Field>
+                        <FieldContent className="flex flex-row items-center">
+                          <FieldTitle className="p- flex flex-col gap-0 p-3">
+                            <span
+                              className={`text-custom-secondary text-2xl font-medium ${rubik.className}`}
+                            >
+                              1-3
+                            </span>
+                            <span className="text-custom-text-muted/60 text-xs">
+                              YEARS
+                            </span>
+                          </FieldTitle>
+                          <FieldDescription className="flex flex-col">
+                            <span className="text-custom-text-muted text-xl">
+                              Intermediate
+                            </span>
+                            <span className="text-custom-text-muted/60">
+                              Familiar with major compound movements.
+                            </span>
+                          </FieldDescription>
+                        </FieldContent>
+                        <RadioGroupItem
+                          value="intermediate"
+                          className="hidden"
+                        />
+                      </Field>
+                    </FieldLabel>
+                    <FieldLabel className="bg-custom-text-muted/5 has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-secondary duration-300 ease-in has-data-[state=checked]:border-4 has-data-[state=unchecked]:border-transparent">
+                      <Field>
+                        <FieldContent className="flex flex-row items-center">
+                          <FieldTitle className="p- flex flex-col gap-0 p-3">
+                            <span
+                              className={`text-custom-secondary text-2xl font-medium ${rubik.className}`}
+                            >
+                              3+
+                            </span>
+                            <span className="text-custom-text-muted/60 text-xs">
+                              YEARS
+                            </span>
+                          </FieldTitle>
+                          <FieldDescription className="flex flex-col">
+                            <span className="text-custom-text-muted text-xl">
+                              Advanced
+                            </span>
+                            <span className="text-custom-text-muted/60">
+                              Consistently training with specific.
+                            </span>
+                          </FieldDescription>
+                        </FieldContent>
+                        <RadioGroupItem value="advanced" className="hidden" />
+                      </Field>
+                    </FieldLabel>
+                  </RadioGroup>
+                </form>
+              </section>
+            </CarouselItem>
           </CarouselContent>
           {/* Navigation */}
           <section className="mt-6 flex justify-center gap-4">
