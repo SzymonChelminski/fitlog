@@ -1,3 +1,5 @@
+'use client';
+
 import { BsCheckCircleFill } from 'react-icons/bs';
 import { CiAt } from 'react-icons/ci';
 import { FaRegCircle } from 'react-icons/fa';
@@ -39,8 +41,13 @@ import { FaDumbbell } from 'react-icons/fa6';
 import { PiSpeedometerFill } from 'react-icons/pi';
 import { MdBolt } from 'react-icons/md';
 import { GiMeditation } from 'react-icons/gi';
+import { TiUserAdd } from 'react-icons/ti';
 
 import { Rubik } from 'next/font/google';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+
+import { signUp } from '../actions';
 
 const rubik = Rubik({
   subsets: ['latin'],
@@ -48,13 +55,42 @@ const rubik = Rubik({
 });
 
 export default function RegisterPage() {
+  const [currPage, setCurrPage] = useState(1);
+  const [data, setData] = useState({
+    email: '',
+    password: '',
+    name: '',
+    age: 0,
+    gender: '',
+    goal: '',
+    experience: '',
+    height: 0,
+    weight: 0,
+  });
+
+  const handleUserData = (property: string, val: string | number) => {
+    setData((prev) => ({
+      ...prev,
+      [property]: val,
+    }));
+  };
+
+  const handlePagination = (btnDir: string) => {
+    if (btnDir === 'next' && currPage < 5) {
+      setCurrPage((prev) => ++prev);
+    } else if (btnDir === 'prev' && currPage > 1) {
+      setCurrPage((prev) => --prev);
+    }
+  };
+
+  console.log(data);
+
   return (
     <>
       <Progress
-        value={20}
-        className="bg-primary [&>div]:bg-custom-primary rounded-none"
+        value={currPage * 20}
+        className="bg-primary [&>div]:bg-custom-primary rounded-none duration-300"
       />
-
       <section className="bg-primary p flex flex-1 flex-col">
         <Carousel className="flex w-full flex-1 flex-col justify-between p-4 text-white">
           <CarouselContent className="flex gap-10 p-4">
@@ -76,6 +112,10 @@ export default function RegisterPage() {
                   <InputGroup className="border-custom-text-muted/40 rounded-none border-b">
                     <InputGroupInput
                       type="email"
+                      value={data.email}
+                      onChange={(e) =>
+                        handleUserData('email', e.currentTarget.value)
+                      }
                       placeholder="example@email.com"
                       className="placeholder:text-custom-text-muted/20"
                     />
@@ -91,6 +131,10 @@ export default function RegisterPage() {
                     <InputGroupInput
                       type="password"
                       placeholder="•••••••"
+                      value={data.password}
+                      onChange={(e) =>
+                        handleUserData('password', e.currentTarget.value)
+                      }
                       className="placeholder:text-custom-text-muted/20"
                     />
                     <InputGroupAddon align="inline-end">
@@ -141,6 +185,10 @@ export default function RegisterPage() {
                         type="text"
                         placeholder="e.g. Alex Rivera"
                         className="placeholder:text-custom-text-muted/20"
+                        value={data.name}
+                        onChange={(e) =>
+                          handleUserData('name', e.currentTarget.value)
+                        }
                       />
                     </InputGroup>
                     <FieldLabel className="text-custom-text-muted/60 mt-4 font-normal">
@@ -150,6 +198,10 @@ export default function RegisterPage() {
                       <InputGroupInput
                         type="number"
                         placeholder="24"
+                        value={data.age}
+                        onChange={(e) =>
+                          handleUserData('age', e.currentTarget.value)
+                        }
                         className="placeholder:text-custom-text-muted/20 [appearance:textfield] duration-250 ease-in [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                       />
                       <InputGroupAddon
@@ -159,7 +211,11 @@ export default function RegisterPage() {
                         YEARS
                       </InputGroupAddon>
                     </InputGroup>
-                    <RadioGroup className="flex flex-row flex-wrap">
+                    <RadioGroup
+                      className="flex flex-row flex-wrap"
+                      value={data.gender}
+                      onValueChange={(val) => handleUserData('gender', val)}
+                    >
                       <FieldLegend className="text-custom-text-muted/60 mt-4 w-full font-normal">
                         BIOLOGICAL GENDER
                       </FieldLegend>
@@ -230,6 +286,10 @@ export default function RegisterPage() {
                       <InputGroupInput
                         type="number"
                         placeholder="000"
+                        value={data.height}
+                        onChange={(e) =>
+                          handleUserData('height', e.currentTarget.value)
+                        }
                         className="placeholder:text-custom-text-muted/20 [appearance:textfield] duration-250 ease-in [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                       />
                       <InputGroupAddon align="inline-end">CM</InputGroupAddon>
@@ -242,6 +302,10 @@ export default function RegisterPage() {
                         type="number"
                         placeholder="00.0"
                         className="placeholder:text-custom-text-muted/20 [appearance:textfield] duration-250 ease-in [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                        value={data.weight}
+                        onChange={(e) =>
+                          handleUserData('weight', e.currentTarget.value)
+                        }
                       />
                       <InputGroupAddon align="inline-end">KG</InputGroupAddon>
                     </InputGroup>
@@ -276,11 +340,15 @@ export default function RegisterPage() {
                   </h3>
                 </section>
                 <form>
-                  <RadioGroup className="grid grid-cols-2">
+                  <RadioGroup
+                    className="grid grid-cols-2"
+                    value={data.goal}
+                    onValueChange={(val) => handleUserData('goal', val)}
+                  >
                     <FieldLabel className="bg-custom-text-muted/5 group/radio has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-secondary flex-1 p-2 duration-250 ease-in has-data-[state=checked]:border-4 has-data-[state=unchecked]:border-transparent">
                       <Field>
                         <FieldContent className="grid place-items-center gap-3">
-                          <FieldTitle className="bg-custom-text-muted/20 group-has-data-[state=checked]/radio:bg-custom-secondary group-has-data-[state=checked]/radio:text-custom-text-main text-custom-text-muted mr-auto rounded-sm p-2 duration-300 ease-in">
+                          <FieldTitle className="bg-custom-text-muted/20 group-has-data-[state=checked]/radio:bg-custom-secondary group-has-data-[state=checked]/radio:text-custom-text-main text-custom-text-muted mr-auto rounded-sm p-2 duration-250 ease-in">
                             <FaDumbbell className="text-2xl" />
                           </FieldTitle>
                           <FieldDescription className="mr-auto font-medium">
@@ -300,7 +368,7 @@ export default function RegisterPage() {
                     <FieldLabel className="bg-custom-text-muted/5 group/radio has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-secondary flex-1 p-2 duration-250 ease-in has-data-[state=checked]:border-4 has-data-[state=unchecked]:border-transparent">
                       <Field>
                         <FieldContent className="grid place-items-center gap-3">
-                          <FieldTitle className="bg-custom-text-muted/20 group-has-data-[state=checked]/radio:bg-custom-secondary group-has-data-[state=checked]/radio:text-custom-text-main text-custom-text-muted mr-auto rounded-sm p-2 duration-300 ease-in">
+                          <FieldTitle className="bg-custom-text-muted/20 group-has-data-[state=checked]/radio:bg-custom-secondary group-has-data-[state=checked]/radio:text-custom-text-main text-custom-text-muted mr-auto rounded-sm p-2 duration-250 ease-in">
                             <PiSpeedometerFill className="text-2xl" />
                           </FieldTitle>
                           <FieldDescription className="mr-auto font-medium">
@@ -320,7 +388,7 @@ export default function RegisterPage() {
                     <FieldLabel className="bg-custom-text-muted/5 group/radio has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-secondary flex-1 p-2 has-data-[state=checked]:border-4 has-data-[state=unchecked]:border-transparent">
                       <Field>
                         <FieldContent className="grid place-items-center gap-3">
-                          <FieldTitle className="bg-custom-text-muted/20 group-has-data-[state=checked]/radio:bg-custom-secondary group-has-data-[state=checked]/radio:text-custom-text-main text-custom-text-muted mr-auto rounded-sm p-2 duration-300 ease-in">
+                          <FieldTitle className="bg-custom-text-muted/20 group-has-data-[state=checked]/radio:bg-custom-secondary group-has-data-[state=checked]/radio:text-custom-text-main text-custom-text-muted mr-auto rounded-sm p-2 duration-250 ease-in">
                             <MdBolt className="text-2xl" />
                           </FieldTitle>
                           <FieldDescription className="mr-auto font-medium">
@@ -337,7 +405,7 @@ export default function RegisterPage() {
                     <FieldLabel className="bg-custom-text-muted/5 group/radio has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-secondary flex-1 p-2 has-data-[state=checked]:border-4 has-data-[state=unchecked]:border-transparent">
                       <Field>
                         <FieldContent className="grid place-items-center gap-3">
-                          <FieldTitle className="bg-custom-text-muted/20 group-has-data-[state=checked]/radio:bg-custom-secondary group-has-data-[state=checked]/radio:text-custom-text-main text-custom-text-muted mr-auto rounded-sm p-2 duration-300 ease-in">
+                          <FieldTitle className="bg-custom-text-muted/20 group-has-data-[state=checked]/radio:bg-custom-secondary group-has-data-[state=checked]/radio:text-custom-text-main text-custom-text-muted mr-auto rounded-sm p-2 duration-250 ease-in">
                             <GiMeditation className="text-2xl" />
                           </FieldTitle>
                           <FieldDescription className="mr-auto font-medium">
@@ -370,8 +438,11 @@ export default function RegisterPage() {
                   </h3>
                 </section>
                 <form>
-                  <RadioGroup>
-                    <FieldLabel className="bg-custom-text-muted/5 has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-secondary duration-300 ease-in has-data-[state=checked]:border-4 has-data-[state=unchecked]:border-transparent">
+                  <RadioGroup
+                    value={data.experience}
+                    onValueChange={(val) => handleUserData('experience', val)}
+                  >
+                    <FieldLabel className="bg-custom-text-muted/5 has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-secondary duration-250 ease-in has-data-[state=checked]:border-4 has-data-[state=unchecked]:border-transparent">
                       <Field>
                         <FieldContent className="flex flex-row items-center">
                           <FieldTitle className="p- flex flex-col gap-0 p-3">
@@ -396,7 +467,7 @@ export default function RegisterPage() {
                         <RadioGroupItem value="beginner" className="hidden" />
                       </Field>
                     </FieldLabel>
-                    <FieldLabel className="bg-custom-text-muted/5 has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-secondary duration-300 ease-in has-data-[state=checked]:border-4 has-data-[state=unchecked]:border-transparent">
+                    <FieldLabel className="bg-custom-text-muted/5 has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-secondary duration-250 ease-in has-data-[state=checked]:border-4 has-data-[state=unchecked]:border-transparent">
                       <Field>
                         <FieldContent className="flex flex-row items-center">
                           <FieldTitle className="p- flex flex-col gap-0 p-3">
@@ -424,7 +495,7 @@ export default function RegisterPage() {
                         />
                       </Field>
                     </FieldLabel>
-                    <FieldLabel className="bg-custom-text-muted/5 has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-secondary duration-300 ease-in has-data-[state=checked]:border-4 has-data-[state=unchecked]:border-transparent">
+                    <FieldLabel className="bg-custom-text-muted/5 has-data-[state=checked]:bg-custom-text-muted/10 has-data-[state=checked]:border-custom-secondary duration-250 ease-in has-data-[state=checked]:border-4 has-data-[state=unchecked]:border-transparent">
                       <Field>
                         <FieldContent className="flex flex-row items-center">
                           <FieldTitle className="p- flex flex-col gap-0 p-3">
@@ -456,21 +527,36 @@ export default function RegisterPage() {
           </CarouselContent>
           {/* Navigation */}
           <section className="mt-6 flex justify-center gap-4">
-            <CarouselPrevious
-              variant="default"
-              size={null}
-              className="static flex translate-y-0 gap-2 p-4 font-normal"
-            />
-            <CarouselNext
-              variant="default"
-              size={null}
-              className="bg-custom-primary static flex translate-y-0 gap-2 p-4 px-5 font-normal"
-            />
+            <span onClick={() => handlePagination('prev')}>
+              <CarouselPrevious
+                variant="default"
+                size={null}
+                className="static flex translate-y-0 gap-2 p-4 font-normal"
+              />
+            </span>
+            {currPage !== 5 ? (
+              <span onClick={() => handlePagination('next')}>
+                <CarouselNext
+                  variant="default"
+                  size={null}
+                  className="bg-custom-primary static flex translate-y-0 gap-2 p-4 px-5 font-normal"
+                />
+              </span>
+            ) : (
+              <Button
+                onClick={() => signUp(data)}
+                variant="default"
+                size={null}
+                className="bg-custom-primary static flex translate-y-0 gap-2 rounded-full p-4 px-5 font-normal"
+              >
+                CREATE USER
+                <TiUserAdd />
+              </Button>
+            )}
           </section>
         </Carousel>
-
         <p className="text-custom-text-muted/40 mb-8 text-center text-xs">
-          STEP 1 of 5
+          STEP {currPage} of 5
         </p>
       </section>
     </>
