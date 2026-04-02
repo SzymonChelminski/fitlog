@@ -5,25 +5,46 @@ import { prisma } from '@/lib/prisma';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-export type SignUpData = {
-  email: string;
-  password: string;
-  name: string;
-  age: number | string;
-  gender: string;
-  height: number | string;
-  weight: number | string;
-  goal: string;
-  experience: string;
-};
+import { signUpSchema, signUpData } from '@/lib/validation/auth';
 
-export async function signUp(data: SignUpData) {
+export async function signUp(data: signUpData) {
+  const validation = signUpSchema.safeParse(data);
+
+  if (!validation.success) {
+    const fieldErrors: Record<string, string> = {};
+
+    validation.error.issues.forEach((issue) => {
+      const fieldName = issue.path[0] as string;
+      if (!fieldErrors[fieldName]) {
+        fieldErrors[fieldName] = issue.message;
+      }
+    });
+
+    return {
+      success: false,
+      errors: fieldErrors,
+      message: undefined,
+    };
+  }
+
+  const {
+    email,
+    password,
+    name,
+    age,
+    gender,
+    height,
+    weight,
+    goal,
+    experience,
+  } = validation.data;
+
   const supabase = await createClient();
   const origin = (await headers()).get('origin');
 
   const { data: authData, error: authError } = await supabase.auth.signUp({
-    email: data.email,
-    password: data.password,
+    email: email,
+    password: password,
     options: { emailRedirectTo: `${origin}/auth/callback` },
   });
 
@@ -38,14 +59,14 @@ export async function signUp(data: SignUpData) {
     await prisma.user.create({
       data: {
         id: authData.user.id,
-        email: data.email,
-        name: data.name,
-        age: Number(data.age),
-        gender: data.gender,
-        height: Number(data.height),
-        weight: Number(data.weight),
-        goal: data.goal,
-        experience: data.experience,
+        email: email,
+        name: name,
+        age: age,
+        gender: gender,
+        height: height,
+        weight: weight,
+        goal: goal,
+        experience: experience,
         hasCompletedOnboarding: true,
       },
     });

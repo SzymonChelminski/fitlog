@@ -42,12 +42,16 @@ import { PiSpeedometerFill } from 'react-icons/pi';
 import { MdBolt } from 'react-icons/md';
 import { GiMeditation } from 'react-icons/gi';
 import { TiUserAdd } from 'react-icons/ti';
+import { LuChevronRight } from 'react-icons/lu';
+import { LuChevronLeft } from 'react-icons/lu';
 
 import { Rubik } from 'next/font/google';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 
 import { signUp } from '../actions';
+import { signUpSchema, signUpData } from '@/lib/validation/auth';
+import { type CarouselApi } from '@/components/ui/carousel';
 
 const rubik = Rubik({
   subsets: ['latin'],
@@ -67,6 +71,47 @@ export default function RegisterPage() {
     height: 0,
     weight: 0,
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [api, setApi] = useState<CarouselApi>();
+
+  const stepFields = {
+    1: ['email', 'password'],
+    2: ['name', 'age', 'gender'],
+    3: ['height', 'weight'],
+    4: ['goal'],
+    5: ['experience'],
+  } as const;
+
+  const validateStep = () => {
+    const fields = stepFields[currPage as keyof typeof stepFields];
+
+    const stepSchema = signUpSchema.pick(
+      Object.fromEntries(fields.map((field) => [field, true])) as any,
+    );
+
+    const dataToValidate = Object.fromEntries(
+      fields.map((field) => [field, data[field as keyof typeof data]]),
+    );
+
+    const result = stepSchema.safeParse(dataToValidate);
+
+    if (!result.success) {
+      const newErrors: Record<string, string> = {};
+
+      result.error.issues.forEach((issue) => {
+        const fieldName = issue.path[0] as string;
+        if (!newErrors[fieldName]) {
+          newErrors[fieldName] = issue.message;
+        }
+      });
+
+      setErrors(newErrors);
+      return false;
+    }
+
+    setErrors({});
+    return true;
+  };
 
   const handleUserData = (property: string, val: string | number) => {
     setData((prev) => ({
@@ -77,13 +122,34 @@ export default function RegisterPage() {
 
   const handlePagination = (btnDir: string) => {
     if (btnDir === 'next' && currPage < 5) {
-      setCurrPage((prev) => ++prev);
+      if (validateStep()) {
+        setCurrPage((prev) => prev + 1);
+        api?.scrollNext(); // Ręczne przewinięcie po walidacji
+      }
     } else if (btnDir === 'prev' && currPage > 1) {
-      setCurrPage((prev) => --prev);
+      setErrors({});
+      setCurrPage((prev) => prev - 1);
+      api?.scrollPrev(); // Ręczne cofnięcie
     }
   };
 
-  console.log(data);
+  const handleSubmit = async () => {
+    // Ostatnia walidacja przed wysyłką
+    if (!validateStep()) return;
+
+    const result = await signUp(data);
+
+    if (result?.success === false) {
+      if (result.errors) {
+        // Błędy walidacji z serwera
+        setErrors(result.errors);
+      } else if (result.message) {
+        // Inne błędy (np. "User already exists")
+        alert(result.message);
+      }
+    }
+    // Jeśli sukces, redirect dzieje się wewnątrz actions.ts
+  };
 
   return (
     <>
@@ -92,7 +158,10 @@ export default function RegisterPage() {
         className="bg-primary [&>div]:bg-custom-primary rounded-none duration-300"
       />
       <section className="bg-primary p flex flex-1 flex-col">
-        <Carousel className="flex w-full flex-1 flex-col justify-between p-4 text-white">
+        <Carousel
+          className="flex w-full flex-1 flex-col justify-between p-4 text-white"
+          setApi={setApi}
+        >
           <CarouselContent className="flex gap-10 p-4">
             {/* Step 1: Account Creation */}
             <CarouselItem>
@@ -123,7 +192,9 @@ export default function RegisterPage() {
                       <CiAt className="text-custom-secondary" />
                     </InputGroupAddon>
                   </InputGroup>
-
+                  {errors.email && (
+                    <p className="text-sm text-orange-600">{errors.email}</p>
+                  )}
                   <FieldLabel className="text-custom-text-muted/60 mt-4 font-normal">
                     PASSWORD
                   </FieldLabel>
@@ -141,6 +212,9 @@ export default function RegisterPage() {
                       <IoIosLock className="text-custom-secondary" />
                     </InputGroupAddon>
                   </InputGroup>
+                  {errors.password && (
+                    <p className="text-sm text-orange-600">{errors.password}</p>
+                  )}
                 </Field>
               </form>
               {/* Password Requirements */}
@@ -191,6 +265,9 @@ export default function RegisterPage() {
                         }
                       />
                     </InputGroup>
+                    {errors.name && (
+                      <p className="text-sm text-orange-600">{errors.name}</p>
+                    )}
                     <FieldLabel className="text-custom-text-muted/60 mt-4 font-normal">
                       AGE
                     </FieldLabel>
@@ -211,6 +288,9 @@ export default function RegisterPage() {
                         YEARS
                       </InputGroupAddon>
                     </InputGroup>
+                    {errors.age && (
+                      <p className="text-sm text-orange-600">{errors.age}</p>
+                    )}
                     <RadioGroup
                       className="flex flex-row flex-wrap"
                       value={data.gender}
@@ -259,6 +339,9 @@ export default function RegisterPage() {
                         </Field>
                       </FieldLabel>
                     </RadioGroup>
+                    {errors.gender && (
+                      <p className="text-sm text-orange-600">{errors.gender}</p>
+                    )}
                   </Field>
                 </form>
               </section>
@@ -294,6 +377,9 @@ export default function RegisterPage() {
                       />
                       <InputGroupAddon align="inline-end">CM</InputGroupAddon>
                     </InputGroup>
+                    {errors.height && (
+                      <p className="text-sm text-orange-600">{errors.height}</p>
+                    )}
                     <FieldLabel className="text-custom-text-muted/60">
                       BODY MASS
                     </FieldLabel>
@@ -309,6 +395,9 @@ export default function RegisterPage() {
                       />
                       <InputGroupAddon align="inline-end">KG</InputGroupAddon>
                     </InputGroup>
+                    {errors.weight && (
+                      <p className="text-sm text-orange-600">{errors.weight}</p>
+                    )}
                   </Field>
                 </form>
                 <Badge className="bg-custom-card-bg flex items-start gap-2 rounded-lg p-4 whitespace-normal">
@@ -354,7 +443,7 @@ export default function RegisterPage() {
                           <FieldDescription className="mr-auto font-medium">
                             <span className="text-custom-text-muted text-lg">
                               Muscle Gain
-                            </span>{' '}
+                            </span>
                             <br />
                             <span className="text-xs">HYPERTROPHY FOCUS</span>
                           </FieldDescription>
@@ -374,7 +463,7 @@ export default function RegisterPage() {
                           <FieldDescription className="mr-auto font-medium">
                             <span className="text-custom-text-muted text-lg">
                               Weight Loss
-                            </span>{' '}
+                            </span>
                             <br />
                             <span className="text-xs">METABOLIC FOCUS</span>
                           </FieldDescription>
@@ -419,6 +508,9 @@ export default function RegisterPage() {
                         <RadioGroupItem value="longevity" className="hidden" />
                       </Field>
                     </FieldLabel>
+                    {errors.goal && (
+                      <p className="text-sm text-orange-600">{errors.goal}</p>
+                    )}
                   </RadioGroup>
                 </form>
               </section>
@@ -520,13 +612,18 @@ export default function RegisterPage() {
                         <RadioGroupItem value="advanced" className="hidden" />
                       </Field>
                     </FieldLabel>
+                    {errors.experience && (
+                      <p className="text-sm text-orange-600">
+                        {errors.experience}
+                      </p>
+                    )}
                   </RadioGroup>
                 </form>
               </section>
             </CarouselItem>
           </CarouselContent>
           {/* Navigation */}
-          <section className="mt-6 flex justify-center gap-4">
+          {/* <section className="mt-6 flex justify-center gap-4">
             <span onClick={() => handlePagination('prev')}>
               <CarouselPrevious
                 variant="default"
@@ -548,6 +645,45 @@ export default function RegisterPage() {
                 variant="default"
                 size={null}
                 className="bg-custom-primary static flex translate-y-0 gap-2 rounded-full p-4 px-5 font-normal"
+              >
+                CREATE USER
+                <TiUserAdd />
+              </Button>
+            )}
+          </section> */}
+          <section className="mt-6 flex w-full items-center justify-center gap-2">
+            <Button
+              type="button"
+              onClick={() => {
+                setErrors({});
+                setCurrPage((prev) => prev - 1);
+                api?.scrollPrev();
+              }}
+              className="flex items-center gap-2 text-xs"
+              disabled={currPage === 1}
+            >
+              <LuChevronLeft />
+              GO BACK
+            </Button>
+            {currPage !== 5 ? (
+              <Button
+                type="button"
+                onClick={() => {
+                  if (validateStep()) {
+                    setCurrPage((prev) => prev + 1);
+                    api?.scrollNext();
+                  }
+                }}
+                className="bg-custom-primary static flex translate-y-0 items-center gap-2 rounded-full p-6"
+              >
+                NEXT STEP
+                <LuChevronRight />
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                onClick={handleSubmit}
+                className="bg-custom-primary static flex translate-y-0 items-center gap-2 rounded-full p-6"
               >
                 CREATE USER
                 <TiUserAdd />
