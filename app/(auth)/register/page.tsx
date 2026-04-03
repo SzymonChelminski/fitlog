@@ -4,6 +4,8 @@ import { BsCheckCircleFill } from 'react-icons/bs';
 import { CiAt } from 'react-icons/ci';
 import { FaRegCircle } from 'react-icons/fa';
 import { IoIosLock } from 'react-icons/io';
+import { IoMdEye } from 'react-icons/io';
+import { IoMdEyeOff } from 'react-icons/io';
 
 import {
   Carousel,
@@ -59,6 +61,7 @@ const rubik = Rubik({
 });
 
 export default function RegisterPage() {
+  const [showPassword, setShowPassword] = useState(false);
   const [currPage, setCurrPage] = useState(1);
   const [data, setData] = useState({
     email: '',
@@ -200,7 +203,7 @@ export default function RegisterPage() {
                   </FieldLabel>
                   <InputGroup className="border-custom-text-muted/40 rounded-none border-b">
                     <InputGroupInput
-                      type="password"
+                      type={showPassword ? 'text' : 'password'}
                       placeholder="•••••••"
                       value={data.password}
                       onChange={(e) =>
@@ -209,7 +212,17 @@ export default function RegisterPage() {
                       className="placeholder:text-custom-text-muted/20"
                     />
                     <InputGroupAddon align="inline-end">
-                      <IoIosLock className="text-custom-secondary" />
+                      {showPassword ? (
+                        <IoMdEyeOff
+                          className="text-custom-secondary"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                        />
+                      ) : (
+                        <IoMdEye
+                          className="text-custom-secondary"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                        />
+                      )}
                     </InputGroupAddon>
                   </InputGroup>
                   {errors.password && (
@@ -220,17 +233,31 @@ export default function RegisterPage() {
               {/* Password Requirements */}
               <section className="text-custom-text-muted my-10 flex items-center justify-center gap-6 text-xs">
                 <span className="flex items-center gap-2">
-                  <BsCheckCircleFill
-                    size={15}
-                    className="text-custom-secondary"
-                  />
+                  {data.password.length >= 8 ? (
+                    <BsCheckCircleFill
+                      size={15}
+                      className="text-custom-secondary"
+                    />
+                  ) : (
+                    <FaRegCircle
+                      size={15}
+                      className="text-custom-text-muted/30"
+                    />
+                  )}
                   8+ CHARACTERS
                 </span>
                 <span className="flex items-center gap-2">
-                  <FaRegCircle
-                    size={15}
-                    className="text-custom-text-muted/30"
-                  />
+                  {/[^A-Za-z0-9]/.test(data.password) ? (
+                    <BsCheckCircleFill
+                      size={15}
+                      className="text-custom-secondary"
+                    />
+                  ) : (
+                    <FaRegCircle
+                      size={15}
+                      className="text-custom-text-muted/30"
+                    />
+                  )}
                   SPECIAL SYMBOL
                 </span>
               </section>
