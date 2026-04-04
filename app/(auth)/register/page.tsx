@@ -3,7 +3,6 @@
 import { BsCheckCircleFill } from 'react-icons/bs';
 import { CiAt } from 'react-icons/ci';
 import { FaRegCircle } from 'react-icons/fa';
-import { IoIosLock } from 'react-icons/io';
 import { IoMdEye } from 'react-icons/io';
 import { IoMdEyeOff } from 'react-icons/io';
 
@@ -85,7 +84,7 @@ export default function RegisterPage() {
     5: ['experience'],
   } as const;
 
-  const validateStep = () => {
+  const validateStep = async () => {
     const fields = stepFields[currPage as keyof typeof stepFields];
 
     const stepSchema = signUpSchema.pick(
@@ -96,7 +95,7 @@ export default function RegisterPage() {
       fields.map((field) => [field, data[field as keyof typeof data]]),
     );
 
-    const result = stepSchema.safeParse(dataToValidate);
+    const result = await stepSchema.safeParseAsync(dataToValidate);
 
     if (!result.success) {
       const newErrors: Record<string, string> = {};
@@ -123,9 +122,9 @@ export default function RegisterPage() {
     }));
   };
 
-  const handlePagination = (btnDir: string) => {
+  const handlePagination = async (btnDir: string) => {
     if (btnDir === 'next' && currPage < 5) {
-      if (validateStep()) {
+      if (await validateStep()) {
         setCurrPage((prev) => prev + 1);
         api?.scrollNext(); // Ręczne przewinięcie po walidacji
       }
@@ -189,7 +188,7 @@ export default function RegisterPage() {
                         handleUserData('email', e.currentTarget.value)
                       }
                       placeholder="example@email.com"
-                      className="placeholder:text-custom-text-muted/20"
+                      className="placeholder:text-custom-text-muted/20 autofill:shadow-[inset_0_0_0_1000px_transparent] autofill:transition-colors autofill:duration-[5000000s]"
                     />
                     <InputGroupAddon align="inline-end">
                       <CiAt className="text-custom-secondary" />
@@ -695,8 +694,8 @@ export default function RegisterPage() {
             {currPage !== 5 ? (
               <Button
                 type="button"
-                onClick={() => {
-                  if (validateStep()) {
+                onClick={async () => {
+                  if (await validateStep()) {
                     setCurrPage((prev) => prev + 1);
                     api?.scrollNext();
                   }

@@ -1,7 +1,16 @@
 import { z } from 'zod';
+import { checkEmailExists } from '@/app/(auth)/actions';
 
 export const signUpSchema = z.object({
-  email: z.string().email('Invalid email address'),
+  email: z.email('Invalid email address').refine(
+    async (mail) => {
+      const exists = await checkEmailExists(mail);
+      return !exists;
+    },
+    {
+      error: 'This email address is already taken',
+    },
+  ),
   password: z
     .string()
     .min(8, 'Password must be at least 8 characters')

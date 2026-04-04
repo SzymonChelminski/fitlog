@@ -8,7 +8,7 @@ import { redirect } from 'next/navigation';
 import { signUpSchema, signUpData } from '@/lib/validation/auth';
 
 export async function signUp(data: signUpData) {
-  const validation = signUpSchema.safeParse(data);
+  const validation = await signUpSchema.safeParseAsync(data);
 
   if (!validation.success) {
     const fieldErrors: Record<string, string> = {};
@@ -75,4 +75,13 @@ export async function signUp(data: signUpData) {
   }
 
   return redirect('/');
+}
+
+export async function checkEmailExists(email: string) {
+  const user = await prisma.user.findUnique({
+    where: { email: email },
+    select: { id: true },
+  });
+
+  return !!user;
 }
