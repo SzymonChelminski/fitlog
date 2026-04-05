@@ -1,6 +1,11 @@
 import { z } from 'zod';
 import { checkEmailExists } from '@/app/(auth)/actions';
 
+export const signInSchema = z.object({
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(1, 'Password is required'),
+});
+
 export const signUpSchema = z.object({
   email: z.email('Invalid email address').refine(
     async (mail) => {
@@ -37,3 +42,4 @@ export const signUpSchema = z.object({
 });
 
 export type signUpData = z.infer<typeof signUpSchema>;
+export type signInData = z.infer<typeof signInSchema>;

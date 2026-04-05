@@ -5,7 +5,47 @@ import { prisma } from '@/lib/prisma';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-import { signUpSchema, signUpData } from '@/lib/validation/auth';
+import {
+  signUpSchema,
+  signUpData,
+  signInSchema,
+  signInData,
+} from '@/lib/validation/auth';
+
+export async function signIn(data: signInData) {
+  const validation = await signInSchema.safeParseAsync(data);
+
+  if (!validation.success) {
+    const fieldErrors: Record<string, string> = {};
+
+    validation.error.issues.forEach((issue) => {
+      const fieldName = issue.path[0] as string;
+      if (!fieldErrors[fieldName]) {
+        fieldErrors[fieldName] = issue.message;
+      }
+    });
+
+    return {
+      success: false,
+      errors: fieldErrors,
+      message: undefined,
+    };
+  }
+
+  const { email, password } = validation.data;
+
+  const supabase = await createClient();
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error) {
+    return redirect('/auth/sign-in?error=' + encodeURIComponent(error.message));
+  }
+
+  return redirect('/');
+}
 
 export async function signUp(data: signUpData) {
   const validation = await signUpSchema.safeParseAsync(data);
