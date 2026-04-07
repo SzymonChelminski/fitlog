@@ -34,7 +34,7 @@ export default async function page() {
           </span>
           <Link href="/workouts/add-workout">
             <Button className="bg-custom-primary rounded-full p-8 text-lg">
-              BUILD FIRST WORKOUT <MdOutlineBolt />
+              BUILD FIRST WORKOUT <MdOutlineBolt className="size-6" />
             </Button>
           </Link>
         </section>
