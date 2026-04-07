@@ -22,12 +22,12 @@ import {
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
-import { Progress } from '@/components/ui/progress';
 
 // Local Components
 import Logo from './Logo';
 import SignOutButton from './SignOutButton';
+
+import UserProfileCard from './UserProfileCard';
 
 const bebas = Bebas_Neue({
   subsets: ['latin'],
@@ -59,30 +59,7 @@ export default async function SideBar() {
         <section className="-mt-6 flex h-full flex-col gap-6 p-4">
           <section className="text-custom-text-muted text-md flex flex-col gap-1 font-medium">
             {user ? (
-              <section className="bg-custom-text-muted/10 flex flex-col gap-4 rounded-lg p-4">
-                <section className="flex gap-4">
-                  <Avatar className="size-20 rounded-md">
-                    <AvatarImage
-                      className="rounded-lg"
-                      src="https://www.perfocal.com/blog/content/images/2021/01/Perfocal_17-11-2019_TYWFAQ_100_standard-3.jpg"
-                    />
-                    {/* <AvatarFallback></AvatarFallback> */}
-                  </Avatar>
-                  <section className="flex flex-col justify-center">
-                    <p className="text-custom-text-main text-2xl font-medium">
-                      Nicole
-                    </p>
-                    <p className="text-custom-secondary">Diamond</p>
-                  </section>
-                </section>
-                <section className="flex flex-col gap-2">
-                  <span className="flex w-full justify-between">
-                    <p>GOAL</p>
-                    <p>73%</p>
-                  </span>
-                  <Progress className="[&>div]:bg-custom-primary" value={73} />
-                </section>
-              </section>
+              <UserProfileCard />
             ) : (
               <>
                 <h2
@@ -106,7 +83,10 @@ export default async function SideBar() {
               <FaUserCircle size={25} />
               <p>My Profile</p>
             </Link>
-            <Link href={'/'} className="flex items-center gap-4 text-2xl">
+            <Link
+              href={'/workouts'}
+              className="flex items-center gap-4 text-2xl"
+            >
               <GiWeightLiftingUp size={25} />
               <p>My workouts</p>
             </Link>

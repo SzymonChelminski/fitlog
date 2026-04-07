@@ -495,7 +495,7 @@ export default function RegisterPage() {
                           </FieldDescription>
                         </FieldContent>
                         <RadioGroupItem
-                          value="weight_losss"
+                          value="weight_loss"
                           className="hidden"
                         />
                       </Field>

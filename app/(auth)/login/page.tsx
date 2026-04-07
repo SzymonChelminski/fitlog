@@ -88,12 +88,12 @@ export default function page() {
             <InputGroupAddon align="inline-end">
               {showPassword ? (
                 <IoMdEyeOff
-                  className="text-custom-secondary"
+                  className="text-custom-secondary cursor-pointer"
                   onClick={() => setShowPassword((prev) => !prev)}
                 />
               ) : (
                 <IoMdEye
-                  className="text-custom-secondary"
+                  className="text-custom-secondary cursor-pointer"
                   onClick={() => setShowPassword((prev) => !prev)}
                 />
               )}
