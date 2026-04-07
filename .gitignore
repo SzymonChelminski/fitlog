@@ -40,4 +40,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# scripts
+scripts/
+
+# other
+public/exercises-gifs/
+data/exercises.json
+
 /lib/generated/prisma
