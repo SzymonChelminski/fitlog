@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { checkEmailExists } from '@/app/(auth)/actions';
+import { checkEmailExists } from '@/app/auth/actions';
 
 export const signInSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -41,5 +41,25 @@ export const signUpSchema = z.object({
     .max(200, 'Weight must be under 200kg'),
 });
 
+export const resetPasswordEmailSchema = z.object({
+  email: z
+    .string()
+    .min(1, 'Email is required to reset the password')
+    .email('Invalid email address')
+    .refine(
+      async (mail) => {
+        const exists = await checkEmailExists(mail);
+        return exists;
+      },
+      {
+        message: 'This email address does not exist in our system',
+      },
+    ),
+});
+
+export const resetPasswordSchema = signUpSchema.pick({ password: true });
+
+export type resetPasswordEmailData = z.infer<typeof resetPasswordEmailSchema>;
+export type resetPasswordData = z.infer<typeof resetPasswordSchema>;
 export type signUpData = z.infer<typeof signUpSchema>;
 export type signInData = z.infer<typeof signInSchema>;

@@ -10,6 +10,10 @@ import {
   signUpData,
   signInSchema,
   signInData,
+  resetPasswordEmailSchema,
+  resetPasswordEmailData,
+  resetPasswordSchema,
+  resetPasswordData,
 } from '@/lib/validation/auth';
 
 export async function signIn(data: signInData) {
@@ -124,4 +128,85 @@ export async function checkEmailExists(email: string) {
   });
 
   return !!user;
+}
+
+export async function sendPasswordResetLink(data: resetPasswordEmailData) {
+  const validation = await resetPasswordEmailSchema.safeParseAsync(data);
+
+  if (!validation.success) {
+    const fieldErrors: Record<string, string> = {};
+
+    validation.error.issues.forEach((issue) => {
+      const fieldName = issue.path[0] as string;
+      if (!fieldErrors[fieldName]) {
+        fieldErrors[fieldName] = issue.message;
+      }
+    });
+
+    return {
+      success: false,
+      errors: fieldErrors,
+      message: undefined,
+    };
+  }
+
+  const { email } = validation.data;
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: 'http://localhost:3000/auth/callback?next=/auth/reset-password',
+  });
+
+  if (error) {
+    return {
+      success: false,
+      errors: undefined,
+      message: error.message,
+    };
+  }
+
+  return {
+    success: true,
+    errors: undefined,
+    message: 'Check your email for the reset link.',
+  };
+}
+
+export async function resetPassword(data: resetPasswordData) {
+  const validation = await resetPasswordSchema.safeParseAsync(data);
+
+  if (!validation.success) {
+    const fieldErrors: Record<string, string> = {};
+
+    validation.error.issues.forEach((issue) => {
+      const fieldName = issue.path[0] as string;
+      if (!fieldErrors[fieldName]) {
+        fieldErrors[fieldName] = issue.message;
+      }
+    });
+
+    return {
+      success: false,
+      errors: fieldErrors,
+      message: undefined,
+    };
+  }
+
+  const { password } = validation.data;
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.updateUser({
+    password,
+  });
+
+  if (error) {
+    return redirect(
+      '/reset-password?error=' + encodeURIComponent(error.message),
+    );
+  }
+
+  return {
+    success: true,
+    message: 'Password updated successfully',
+  };
 }

@@ -15,7 +15,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
-import { signIn } from '../actions';
+import { signIn, sendPasswordResetLink } from '../actions';
 
 export default function page() {
   const [showPassword, setShowPassword] = useState(false);
@@ -24,6 +24,7 @@ export default function page() {
     password: '',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [message, setMessage] = useState('');
 
   const handleSubmit = async () => {
     const result = await signIn(data);
@@ -103,12 +104,29 @@ export default function page() {
         <Button
           variant="ghost"
           className="text-custom-text-muted/60 max-w-fit p-0 text-sm"
+          onClick={async (e) => {
+            e.preventDefault();
+            const { success, errors, message } = await sendPasswordResetLink({
+              email: data.email,
+            });
+
+            if (!success) {
+              if (errors?.email) {
+                setErrors({ email: errors.email });
+              } else if (message) {
+                setMessage(message ?? '');
+              }
+            } else {
+              setMessage(message ?? '');
+            }
+          }}
         >
           Reset password
         </Button>
         {errors.password && (
           <p className="text-sm text-orange-600">{errors.password}</p>
         )}
+        {message && <p className="text-custom-secondary text-sm">{message}</p>}
       </form>
       <section className="mt-auto flex flex-col gap-4 text-center">
         <Button
@@ -121,7 +139,7 @@ export default function page() {
         </Button>
         <p className="text-custom-text-muted/60 px-4 text-sm">
           New to the Observatory?
-          <Link href="/register" className="text-custom-primary ml-1">
+          <Link href="/auth/register" className="text-custom-primary ml-1">
             Create Account
           </Link>
         </p>

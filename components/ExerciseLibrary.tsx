@@ -137,9 +137,9 @@ export function ExerciseLibrary({ exercises }: { exercises: Exercise[] }) {
           />
         </span>
         <CommandList>
-          {/* <CommandEmpty className="text-custom-text-muted py-6 text-center">
+          <CommandEmpty className="text-custom-text-muted py-6 text-center">
             No exercises found.
-          </CommandEmpty> */}
+          </CommandEmpty>
           <CommandGroup className="max-h-150 **:[[role=group]]:flex **:[[role=group]]:flex-col **:[[role=group]]:gap-2">
             {filtered.map((ex) => (
               <ExerciseItem

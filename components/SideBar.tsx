@@ -102,7 +102,7 @@ export default async function SideBar() {
               <SignOutButton />
             ) : (
               <>
-                <Link href={'/login'}>
+                <Link href={'/auth/login'}>
                   <Button
                     className="text-custom-background-dark bg-custom-primary w-full cursor-pointer py-8 text-xl font-bold"
                     variant="default"
@@ -112,7 +112,7 @@ export default async function SideBar() {
                     Log In
                   </Button>
                 </Link>
-                <Link href={'/register'}>
+                <Link href={'/auth/register'}>
                   <Button
                     size="lg"
                     variant="outline"
