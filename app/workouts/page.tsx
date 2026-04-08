@@ -18,7 +18,7 @@ export default async function page() {
   });
 
   return (
-    <section className="bg-primary flex flex-1 p-4 text-white">
+    <section className="bg-primary flex flex-1 justify-center p-4 text-white">
       {userProfile?.trainingPlans === undefined ||
       userProfile?.trainingPlans.length < 1 ? (
         <section className="flex flex-col items-center justify-around gap-4">
@@ -33,7 +33,7 @@ export default async function page() {
             </p>
           </span>
           <Link href="/workouts/add-workout">
-            <Button className="bg-custom-primary rounded-full p-8 text-lg">
+            <Button className="bg-custom-primary rounded-full p-4 px-8 text-lg">
               BUILD FIRST WORKOUT <MdOutlineBolt className="size-6" />
             </Button>
           </Link>
