@@ -20,9 +20,9 @@ export async function GET(
 
   if (!res.ok) {
     const errorText = await res.text();
-    console.error('Błąd z RapidAPI:', res.status, errorText);
+    console.error('RapidAPI Error:', res.status, errorText);
 
-    return new NextResponse(`Błąd API: ${res.status}`, { status: res.status });
+    return new NextResponse(`API Error: ${res.status}`, { status: res.status });
   }
 
   const imageBlob = await res.blob();

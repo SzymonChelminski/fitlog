@@ -1,17 +1,16 @@
 'use client';
 
-import { BsCheckCircleFill } from 'react-icons/bs';
-import { CiAt } from 'react-icons/ci';
-import { FaRegCircle } from 'react-icons/fa';
-import { IoMdEye } from 'react-icons/io';
-import { IoMdEyeOff } from 'react-icons/io';
-
+import { useState } from 'react';
+import { Rubik } from 'next/font/google';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
+import { Badge } from '@/components/ui/badge';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
+  type CarouselApi,
 } from '@/components/ui/carousel';
 import {
   Field,
@@ -26,33 +25,27 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from '@/components/ui/input-group';
-import { Progress } from '@/components/ui/progress';
 
-import { Badge } from '@/components/ui/badge';
-
-import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-
-import { IoMdMale } from 'react-icons/io';
-import { IoMdFemale } from 'react-icons/io';
-import { FaRulerHorizontal } from 'react-icons/fa';
-import { GoCircle } from 'react-icons/go';
-import { IoMdInformationCircleOutline } from 'react-icons/io';
+import { BsCheckCircleFill } from 'react-icons/bs';
+import { CiAt } from 'react-icons/ci';
+import { FaRegCircle, FaRulerHorizontal } from 'react-icons/fa';
 import { FaDumbbell } from 'react-icons/fa6';
+import {
+  IoMdEye,
+  IoMdEyeOff,
+  IoMdMale,
+  IoMdFemale,
+  IoMdInformationCircleOutline,
+} from 'react-icons/io';
 import { PiSpeedometerFill } from 'react-icons/pi';
 import { MdBolt } from 'react-icons/md';
 import { GiMeditation } from 'react-icons/gi';
 import { TiUserAdd } from 'react-icons/ti';
-import { LuChevronRight } from 'react-icons/lu';
-import { LuChevronLeft } from 'react-icons/lu';
-
-import { Rubik } from 'next/font/google';
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { LuChevronRight, LuChevronLeft } from 'react-icons/lu';
+import { GoCircle } from 'react-icons/go';
 
 import { signUp } from '../actions';
-import { signUpSchema, signUpData } from '@/lib/validation/auth';
-import { type CarouselApi } from '@/components/ui/carousel';
+import { signUpSchema } from '@/lib/validation/auth';
 
 const rubik = Rubik({
   subsets: ['latin'],
@@ -126,31 +119,27 @@ export default function RegisterPage() {
     if (btnDir === 'next' && currPage < 5) {
       if (await validateStep()) {
         setCurrPage((prev) => prev + 1);
-        api?.scrollNext(); // Ręczne przewinięcie po walidacji
+        api?.scrollNext();
       }
     } else if (btnDir === 'prev' && currPage > 1) {
       setErrors({});
       setCurrPage((prev) => prev - 1);
-      api?.scrollPrev(); // Ręczne cofnięcie
+      api?.scrollPrev();
     }
   };
 
   const handleSubmit = async () => {
-    // Ostatnia walidacja przed wysyłką
     if (!validateStep()) return;
 
     const result = await signUp(data);
 
     if (result?.success === false) {
       if (result.errors) {
-        // Błędy walidacji z serwera
         setErrors(result.errors);
       } else if (result.message) {
-        // Inne błędy (np. "User already exists")
         alert(result.message);
       }
     }
-    // Jeśli sukces, redirect dzieje się wewnątrz actions.ts
   };
 
   return (
@@ -165,7 +154,6 @@ export default function RegisterPage() {
           setApi={setApi}
         >
           <CarouselContent className="flex gap-10 p-4">
-            {/* Step 1: Account Creation */}
             <CarouselItem>
               <section className="mb-12 flex flex-col items-center">
                 <h1 className="text-center text-[2.5rem] font-extralight">
@@ -229,7 +217,6 @@ export default function RegisterPage() {
                   )}
                 </Field>
               </form>
-              {/* Password Requirements */}
               <section className="text-custom-text-muted my-10 flex items-center justify-center gap-6 text-xs">
                 <span className="flex items-center gap-2">
                   {data.password.length >= 8 ? (
@@ -534,10 +521,10 @@ export default function RegisterPage() {
                         <RadioGroupItem value="longevity" className="hidden" />
                       </Field>
                     </FieldLabel>
-                    {errors.goal && (
-                      <p className="text-sm text-orange-600">{errors.goal}</p>
-                    )}
                   </RadioGroup>
+                  {errors.goal && (
+                    <p className="text-sm text-orange-600">{errors.goal}</p>
+                  )}
                 </form>
               </section>
             </CarouselItem>
@@ -638,53 +625,20 @@ export default function RegisterPage() {
                         <RadioGroupItem value="advanced" className="hidden" />
                       </Field>
                     </FieldLabel>
-                    {errors.experience && (
-                      <p className="text-sm text-orange-600">
-                        {errors.experience}
-                      </p>
-                    )}
                   </RadioGroup>
+                  {errors.experience && (
+                    <p className="text-sm text-orange-600">
+                      {errors.experience}
+                    </p>
+                  )}
                 </form>
               </section>
             </CarouselItem>
           </CarouselContent>
-          {/* Navigation */}
-          {/* <section className="mt-6 flex justify-center gap-4">
-            <span onClick={() => handlePagination('prev')}>
-              <CarouselPrevious
-                variant="default"
-                size={null}
-                className="static flex translate-y-0 gap-2 p-4 font-normal"
-              />
-            </span>
-            {currPage !== 5 ? (
-              <span onClick={() => handlePagination('next')}>
-                <CarouselNext
-                  variant="default"
-                  size={null}
-                  className="bg-custom-primary static flex translate-y-0 gap-2 p-4 px-5 font-normal"
-                />
-              </span>
-            ) : (
-              <Button
-                onClick={() => signUp(data)}
-                variant="default"
-                size={null}
-                className="bg-custom-primary static flex translate-y-0 gap-2 rounded-full p-4 px-5 font-normal"
-              >
-                CREATE USER
-                <TiUserAdd />
-              </Button>
-            )}
-          </section> */}
           <section className="mt-6 flex w-full items-center justify-center gap-2">
             <Button
               type="button"
-              onClick={() => {
-                setErrors({});
-                setCurrPage((prev) => prev - 1);
-                api?.scrollPrev();
-              }}
+              onClick={() => handlePagination('prev')}
               className="flex items-center gap-2 text-xs"
               disabled={currPage === 1}
             >
@@ -694,12 +648,7 @@ export default function RegisterPage() {
             {currPage !== 5 ? (
               <Button
                 type="button"
-                onClick={async () => {
-                  if (await validateStep()) {
-                    setCurrPage((prev) => prev + 1);
-                    api?.scrollNext();
-                  }
-                }}
+                onClick={() => handlePagination('next')}
                 className="bg-custom-primary static flex translate-y-0 items-center gap-2 rounded-full p-6"
               >
                 NEXT STEP

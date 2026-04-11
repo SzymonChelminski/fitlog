@@ -1,5 +1,5 @@
 import { ExerciseLibrary } from '@/components/ExerciseLibrary';
-import getAllExercises from '@/app/services/getExercisesList';
+import getAllExercises from '@/services/getExercisesList';
 
 export default async function page() {
   const exercises = await getAllExercises();

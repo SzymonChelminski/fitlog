@@ -1,5 +1,8 @@
 'use client';
 
+import { useState, useCallback, useMemo, useDeferredValue, memo } from 'react';
+import { FiInfo } from 'react-icons/fi';
+
 import {
   Command,
   CommandInput,
@@ -13,17 +16,14 @@ import {
   FieldContent,
   FieldTitle,
   FieldDescription,
-  FieldLabel,
 } from '@/components/ui/field';
-import { Checkbox } from '@/components/ui/checkbox';
-import { FiInfo } from 'react-icons/fi';
-import { useState, useCallback, useMemo, useDeferredValue, memo } from 'react';
-import { Exercise } from '@/app/types/exercise';
-import { Button } from './ui/button';
-import createTrainingPlan from '@/app/actions/trainingActions';
-
 import { Input } from './ui/input';
+import { Button } from './ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
+
+import { Exercise } from '@/types/exercise';
+import createTrainingPlan from '@/actions/trainingActions';
 
 const ExerciseItem = memo(function ExerciseItem({
   ex,
@@ -124,6 +124,7 @@ export function ExerciseLibrary({ exercises }: { exercises: Exercise[] }) {
       </div>
 
       <Separator className="bg-custom-text-muted/15" />
+
       <Command
         shouldFilter={false}
         className="gap-4 rounded-md! bg-transparent"

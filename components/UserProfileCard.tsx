@@ -1,10 +1,9 @@
-import React from 'react';
-
 import { prisma } from '@/lib/prisma';
 import { getUser } from '@/lib/supabase/auth';
 
 import { FaCircleUser } from 'react-icons/fa6';
-import { Avatar, AvatarFallback, AvatarImage, AvatarBadge } from './ui/avatar';
+
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 
 const getUserGoal = (goal: string | null | undefined) => {
   if (!goal) return;
@@ -22,7 +21,7 @@ const getUserGoal = (goal: string | null | undefined) => {
 };
 
 export default async function UserProfileCard() {
-  const { user, error } = await getUser();
+  const { user } = await getUser();
 
   const userProfile = await prisma.user.findUnique({
     where: { id: user!.id },
@@ -46,7 +45,6 @@ export default async function UserProfileCard() {
               <FaCircleUser className="text-primary size-full" />
             </AvatarFallback>
           )}
-          {/* <AvatarBadge className="bg-green-500" /> */}
         </Avatar>
         <span>
           <p className="text-custom-text-main text-xl wrap-break-word">
