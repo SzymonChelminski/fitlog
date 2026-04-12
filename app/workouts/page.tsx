@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import { MdOutlineBolt } from 'react-icons/md';
 import Link from 'next/link';
 
+import PlanLibrary from '@/components/PlanLibrary';
+
 export default async function page() {
   const { user, error } = await getUser();
 
@@ -39,7 +41,15 @@ export default async function page() {
           </Link>
         </section>
       ) : (
-        <div>b</div>
+        <section className="bg-primary flex flex-1 flex-col">
+          <span className="flex flex-col gap-2">
+            <h2 className="text-custom-secondary font-bold">YOUR COLLECTION</h2>
+            <h1 className="text-custom-text-main text-4xl font-medium">
+              My Library
+            </h1>
+          </span>
+          <PlanLibrary routines={userProfile?.trainingPlans} />
+        </section>
       )}
     </section>
   );
