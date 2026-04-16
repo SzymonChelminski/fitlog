@@ -41,7 +41,7 @@ export default async function page() {
           </Link>
         </section>
       ) : (
-        <section className="bg-primary flex flex-1 flex-col">
+        <section className="bg-primary flex flex-1 flex-col gap-4">
           <span className="flex flex-col gap-2">
             <h2 className="text-custom-secondary font-bold">YOUR COLLECTION</h2>
             <h1 className="text-custom-text-main text-4xl font-medium">
