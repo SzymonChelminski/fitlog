@@ -1,0 +1,197 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.809 0.105 251.813);
+  --chart-2: oklch(0.623 0.214 259.815);
+  --chart-3: oklch(0.546 0.245 262.881);
+  --chart-4: oklch(0.488 0.243 264.376);
+  --chart-5: oklch(0.424 0.199 265.638);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+
+  /* ── App theme tokens: light mode ──────────────────────────────────────── */
+  --app-page-bg:    #e8edf3;
+  --app-text-main:  #0f172a;
+  --app-text-muted: #475569;
+  --app-card-bg:    rgba(255, 255, 255, 0.96);
+  --app-border:     rgba(0, 0, 0, 0.18);
+  --app-bg-dark:    #dce3ec;
+  --app-bg-medium:  #d4dce8;
+  --app-overlay-sm: rgba(0, 0, 0, 0.05);
+  --app-overlay-md: rgba(0, 0, 0, 0.09);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.809 0.105 251.813);
+  --chart-2: oklch(0.623 0.214 259.815);
+  --chart-3: oklch(0.546 0.245 262.881);
+  --chart-4: oklch(0.488 0.243 264.376);
+  --chart-5: oklch(0.424 0.199 265.638);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+
+  /* ── App theme tokens: dark mode ───────────────────────────────────────── */
+  --app-page-bg:    #0f172a;
+  --app-text-main:  #f1f5f9;
+  --app-text-muted: #94a3b8;
+  --app-card-bg:    rgba(30, 41, 59, 0.94);
+  --app-border:     rgba(255, 255, 255, 0.18);
+  --app-bg-dark:    #0a101e;
+  --app-bg-medium:  #1e293b;
+  --app-overlay-sm: rgba(255, 255, 255, 0.06);
+  --app-overlay-md: rgba(255, 255, 255, 0.10);
+}
+
+@theme inline {
+  /* ── Display font (Orbitron, loaded via Next.js font variable) ── */
+  --font-display: var(--font-orbitron);
+  /* ── App brand tokens (accent colours never change) ── */
+  --color-custom-primary:   #4f46e5;
+  --color-custom-secondary: #38bdf8;
+  /* ── App semantic tokens (all theme-responsive via var()) ── */
+  --color-custom-page:             var(--app-page-bg);
+  --color-custom-text-main:        var(--app-text-main);
+  --color-custom-text-muted:       var(--app-text-muted);
+  --color-custom-card-bg:          var(--app-card-bg);
+  --color-custom-border:           var(--app-border);
+  --color-custom-background-dark:  var(--app-bg-dark);
+  --color-custom-background-light: var(--app-bg-medium);
+  --color-custom-overlay-sm:       var(--app-overlay-sm);
+  --color-custom-overlay-md:       var(--app-overlay-md);
+  --font-sans: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+
+/* ── Glass card effect ──────────────────────────────────────────────────────
+   Apply `.glass` alongside `bg-custom-card-bg` on any card element to get
+   the frosted-glass look: backdrop-blur + subtle depth shadow + top-edge
+   highlight (mimics light reflecting off a glass surface).
+   ──────────────────────────────────────────────────────────────────────── */
+.glass {
+  backdrop-filter: blur(14px) saturate(1.5);
+  -webkit-backdrop-filter: blur(14px) saturate(1.5);
+  box-shadow:
+    0 2px 20px rgba(0, 0, 0, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+.dark .glass {
+  box-shadow:
+    0 2px 24px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  /* All interactive button-like elements show a pointer cursor */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+  /* Both html and body get the app background so rubber-band
+     overscroll (iOS/macOS) and any edge gaps never expose a
+     different colour. */
+  html {
+    @apply bg-custom-page font-sans;
+  }
+  body {
+    @apply bg-custom-page text-foreground;
+    /* Clip any horizontal overflow from the grid's w-screen breakout
+       without disabling position:fixed (unlike overflow-x:hidden). */
+    overflow-x: clip;
+  }
+}
