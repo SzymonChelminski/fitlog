@@ -1,6 +1,7 @@
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
+import { createClient as createAdminClient } from '@supabase/supabase-js';
 import { prisma } from '@/lib/prisma';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -74,32 +75,16 @@ export async function signUp(data: signUpData) {
 
   if (!validation.success) {
     const fieldErrors: Record<string, string> = {};
-
     validation.error.issues.forEach((issue) => {
       const fieldName = issue.path[0] as string;
       if (!fieldErrors[fieldName]) {
         fieldErrors[fieldName] = issue.message;
       }
     });
-
-    return {
-      success: false,
-      errors: fieldErrors,
-      message: undefined,
-    };
+    return { success: false, errors: fieldErrors, message: undefined };
   }
 
-  const {
-    email,
-    password,
-    name,
-    age,
-    gender,
-    height,
-    weight,
-    goal,
-    experience,
-  } = validation.data;
+  const { email, password, name, age, gender, height, weight, goal, experience } = validation.data;
 
   const supabase = await createClient();
   const origin = (await headers()).get('origin');
@@ -110,70 +95,8 @@ export async function signUp(data: signUpData) {
     options: { emailRedirectTo: `${origin}/auth/callback` },
   });
 
-  const isAlreadyInAuth =
-    authError?.message === 'User already registered' ||
-    (authData?.user != null && (authData.user.identities ?? []).length === 0);
-
-  if (isAlreadyInAuth) {
-    const { data: signInResult, error: signInError } =
-      await supabase.auth.signInWithPassword({ email, password });
-
-    if (signInError || !signInResult?.user) {
-      return {
-        success: false as const,
-        errors: undefined,
-        message:
-          'This email address is already registered. Please log in instead.',
-      };
-    }
-
-    const existingProfile = await prisma.user.findUnique({
-      where: { id: signInResult.user.id },
-      select: { id: true },
-    });
-
-    if (existingProfile) {
-      return {
-        success: false as const,
-        errors: undefined,
-        message:
-          'This email address is already registered. Please log in instead.',
-      };
-    }
-
-    try {
-      await prisma.user.create({
-        data: {
-          id: signInResult.user.id,
-          email,
-          name,
-          age,
-          gender,
-          height,
-          weight,
-          goal,
-          experience,
-          hasCompletedOnboarding: true,
-        },
-      });
-    } catch {
-      await supabase.auth.signOut();
-      return {
-        success: false as const,
-        errors: undefined,
-        message: 'Failed to save your profile. Please try again.',
-      };
-    }
-
-    return redirect('/dashboard');
-  }
-
-  if (authError || !authData?.user) {
-    return {
-      success: false as const,
-      errors: undefined,
-      message: authError?.message ?? 'Registration failed. Please try again.',
-    };
+  if (authError || !authData.user) {
+    return { success: false, errors: undefined, message: authError?.message ?? 'Registration failed. Please try again.' };
   }
 
   try {
@@ -192,11 +115,12 @@ export async function signUp(data: signUpData) {
       },
     });
   } catch {
-    return {
-      success: false as const,
-      errors: undefined,
-      message: 'Failed to save your profile. Please try again.',
-    };
+    const admin = createAdminClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    );
+    await admin.auth.admin.deleteUser(authData.user.id);
+    return { success: false, errors: undefined, message: 'Failed to create database profile.' };
   }
 
   await supabase.auth.signInWithPassword({ email, password });

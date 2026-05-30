@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import { Rubik } from 'next/font/google';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -41,9 +41,10 @@ import { MdBolt } from 'react-icons/md';
 import { GiMeditation } from 'react-icons/gi';
 import { TiUserAdd } from 'react-icons/ti';
 import { LuChevronRight, LuChevronLeft } from 'react-icons/lu';
+import { Loader2 } from 'lucide-react';
 import { GoCircle } from 'react-icons/go';
 
-import { signUp } from '../actions';
+import { signUp, checkEmailExists } from '../actions';
 import { signUpSchema } from '@/lib/validation/auth';
 
 const rubik = Rubik({
@@ -68,6 +69,7 @@ export default function RegisterPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitError, setSubmitError] = useState('');
   const [api, setApi] = useState<CarouselApi>();
+  const [isPending, startTransition] = useTransition();
 
   const stepFields = {
     1: ['email', 'password'],
@@ -104,6 +106,16 @@ export default function RegisterPage() {
       return false;
     }
 
+    if (currPage === 1) {
+      const exists = await checkEmailExists(data.email);
+      if (exists) {
+        setErrors({
+          email: 'This email is already registered. Please log in instead.',
+        });
+        return false;
+      }
+    }
+
     setErrors({});
     return true;
   };
@@ -128,33 +140,41 @@ export default function RegisterPage() {
     }
   };
 
-  const handleSubmit = async () => {
-    setSubmitError('');
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    if (e.key !== 'Enter') return;
+    e.preventDefault();
+    if (currPage === 5) handleSubmit();
+    else handlePagination('next');
+  };
 
-    if (!(await validateStep())) return;
+  const handleSubmit = () => {
+    startTransition(async () => {
+      setSubmitError('');
 
-    const formattedData = {
-      ...data,
-      age: Number(data.age) || 0,
-      height: Number(data.height) || 0,
-      weight: Number(data.weight) || 0,
-    };
+      if (!(await validateStep())) return;
 
-    const result = await signUp(formattedData);
+      const formattedData = {
+        ...data,
+        age: Number(data.age) || 0,
+        height: Number(data.height) || 0,
+        weight: Number(data.weight) || 0,
+      };
 
-    if (result?.success === false) {
-      if (result.errors) {
-        setErrors(result.errors);
-      } else if (result.message) {
-        setSubmitError(result.message);
+      const result = await signUp(formattedData);
+
+      if (result?.success === false) {
+        if (result.errors) {
+          setErrors(result.errors);
+        } else if (result.message) {
+          setSubmitError(result.message);
+        }
       }
-    }
+    });
   };
 
   return (
     <>
       <main className="bg-custom-page flex flex-1 flex-col items-center">
-
         <div className="flex w-full max-w-lg gap-1.5 px-4 pt-4 sm:px-6 sm:pt-5">
           {[1, 2, 3, 4, 5].map((step) => (
             <div
@@ -168,7 +188,7 @@ export default function RegisterPage() {
 
         <Carousel
           opts={{ watchDrag: false, watchFocus: false }}
-          className="flex w-full max-w-lg flex-1 flex-col justify-between p-4 text-custom-text-main sm:p-6"
+          className="text-custom-text-main flex w-full max-w-lg flex-1 flex-col justify-between p-4 sm:p-6"
           setApi={setApi}
         >
           <CarouselContent className="flex gap-10 p-4">
@@ -181,7 +201,7 @@ export default function RegisterPage() {
                   Begin your performance tracking journey.
                 </h2>
               </section>
-              <form>
+              <form onKeyDown={handleKeyDown}>
                 <Field>
                   <FieldLabel className="text-custom-text-muted/80 font-normal">
                     EMAIL ADDRESS
@@ -280,7 +300,7 @@ export default function RegisterPage() {
                     performance curves.
                   </h3>
                 </section>
-                <form>
+                <form onKeyDown={handleKeyDown}>
                   <Field>
                     <FieldLabel className="text-custom-text-muted/80 font-normal">
                       FULL NAME
@@ -391,7 +411,7 @@ export default function RegisterPage() {
                     current measurements for accurate metabolic tracking.
                   </h3>
                 </section>
-                <form className="">
+                <form onKeyDown={handleKeyDown}>
                   <Field>
                     <FieldLabel className="text-custom-text-muted/60">
                       STATURE
@@ -431,13 +451,13 @@ export default function RegisterPage() {
                     )}
                   </Field>
                 </form>
-                <Badge className="glass border border-custom-border bg-custom-card-bg flex items-start gap-3 rounded-xl p-4 whitespace-normal">
+                <Badge className="glass border-custom-border bg-custom-card-bg flex items-start gap-3 rounded-xl border p-4 whitespace-normal">
                   <IoMdInformationCircleOutline
                     size={20}
-                    className="mt-0.5 shrink-0 text-custom-secondary"
+                    className="text-custom-secondary mt-0.5 shrink-0"
                   />
-                  <p className="text-left text-sm text-custom-text-muted">
-                    <span className="block text-base font-medium text-custom-text-main">
+                  <p className="text-custom-text-muted text-left text-sm">
+                    <span className="text-custom-text-main block text-base font-medium">
                       Calibration Note
                     </span>
                     These values will calibrate your initial calorie expenditure
@@ -459,7 +479,7 @@ export default function RegisterPage() {
                     clear destination to keep your momentum high.
                   </h3>
                 </section>
-                <form>
+                <form onKeyDown={handleKeyDown}>
                   <RadioGroup
                     className="grid grid-cols-2"
                     value={data.goal}
@@ -560,7 +580,7 @@ export default function RegisterPage() {
                     receive the most accurate performance data.
                   </h3>
                 </section>
-                <form>
+                <form onKeyDown={handleKeyDown}>
                   <RadioGroup
                     value={data.experience}
                     onValueChange={(val) => handleUserData('experience', val)}
@@ -664,7 +684,7 @@ export default function RegisterPage() {
               type="button"
               variant="ghost"
               onClick={() => handlePagination('prev')}
-              className="cursor-pointer gap-2 px-6 py-3 text-sm text-custom-text-muted/70 hover:bg-transparent hover:text-custom-text-main"
+              className="text-custom-text-muted/70 hover:text-custom-text-main cursor-pointer gap-2 px-6 py-3 text-sm hover:bg-transparent"
               disabled={currPage === 1}
             >
               <LuChevronLeft className="size-4" />
@@ -674,7 +694,7 @@ export default function RegisterPage() {
               <Button
                 type="button"
                 onClick={() => handlePagination('next')}
-                className="cursor-pointer bg-custom-primary gap-2 rounded-full px-10 py-3.5 text-sm font-medium tracking-wide text-white transition-opacity hover:opacity-90"
+                className="bg-custom-primary cursor-pointer gap-2 rounded-full px-10 py-3.5 text-sm font-medium tracking-wide text-white transition-opacity hover:opacity-90"
               >
                 NEXT STEP
                 <LuChevronRight className="size-4" />
@@ -683,10 +703,20 @@ export default function RegisterPage() {
               <Button
                 type="button"
                 onClick={handleSubmit}
-                className="cursor-pointer bg-custom-primary gap-2 rounded-full px-10 py-3.5 text-sm font-medium tracking-wide text-white transition-opacity hover:opacity-90"
+                disabled={isPending}
+                className="bg-custom-primary cursor-pointer gap-2 rounded-full px-10 py-3.5 text-sm font-medium tracking-wide text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70"
               >
-                CREATE USER
-                <TiUserAdd className="size-4" />
+                {isPending ? (
+                  <>
+                    <Loader2 className="size-4 animate-spin" />
+                    CREATING...
+                  </>
+                ) : (
+                  <>
+                    CREATE USER
+                    <TiUserAdd className="size-4" />
+                  </>
+                )}
               </Button>
             )}
           </section>
