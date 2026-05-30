@@ -68,15 +68,21 @@ export function GridBackground() {
     if (!ctx) return;
 
     const resize = () => {
-      canvas.width  = window.innerWidth;
-      canvas.height = window.innerHeight;
+      // Use screen dimensions so the canvas resolution stays constant regardless
+      // of browser zoom level (window.innerWidth shrinks proportionally with zoom).
+      canvas.width  = screen.width;
+      canvas.height = screen.height;
       particlesRef.current = createParticles(canvas.width, canvas.height);
     };
     resize();
     window.addEventListener('resize', resize);
 
     const onMove = (e: MouseEvent) => {
-      cursorRef.current = { x: e.clientX, y: e.clientY };
+      // e.clientX is in CSS pixels; scale to canvas pixels so repulsion tracks
+      // the cursor correctly at any zoom level.
+      const scaleX = canvas.width  / window.innerWidth;
+      const scaleY = canvas.height / window.innerHeight;
+      cursorRef.current = { x: e.clientX * scaleX, y: e.clientY * scaleY };
       rawX.set(e.clientX);
       rawY.set(e.clientY);
     };
@@ -175,6 +181,11 @@ export function GridBackground() {
         ref={canvasRef}
         className="absolute inset-0"
         style={{
+          // Stretch the canvas element to fill the CSS viewport so it covers
+          // the full screen at any zoom level, while the internal width/height
+          // attributes keep the drawing resolution pinned to screen dimensions.
+          width: '100%',
+          height: '100%',
           WebkitMaskImage:
             'radial-gradient(ellipse 90% 88% at 50% 42%, black 25%, transparent 100%)',
           maskImage:

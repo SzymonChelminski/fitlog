@@ -264,12 +264,15 @@ export default async function DashboardPage() {
     0,
   );
   const weeklyMinutes = weeklyLogs.reduce(
-    (s: number, l: { durationMinutes: number | null }) => s + (l.durationMinutes ?? 0),
+    (s: number, l: { durationMinutes: number | null }) =>
+      s + (l.durationMinutes ?? 0),
     0,
   );
   const weeklyKcal = estimateKcal(weeklyMinutes, bodyWeightKg, gender);
 
-  const longestStreak = computeLongestStreak(allLogs.map((l: { date: Date }) => l.date));
+  const longestStreak = computeLongestStreak(
+    allLogs.map((l: { date: Date }) => l.date),
+  );
 
   const dailyVolume = Array(7).fill(0) as number[];
   const dailyDuration = Array(7).fill(0) as number[];
@@ -306,7 +309,9 @@ export default async function DashboardPage() {
       ? 'N/A'
       : `${longestStreak} ${longestStreak === 1 ? 'week' : 'weeks'}`;
 
-  const planMap = new Map(trainingPlans.map((p: { id: string; title: string }) => [p.title, p.id]));
+  const planMap = new Map(
+    trainingPlans.map((p: { id: string; title: string }) => [p.title, p.id]),
+  );
 
   const firstName = userProfile.name.split(' ')[0];
 
@@ -314,9 +319,7 @@ export default async function DashboardPage() {
     <main className="bg-custom-page text-custom-text-main flex flex-1 cursor-default flex-col gap-10 px-4 py-6 pb-24 select-none sm:px-6 sm:py-8">
       <header className="flex flex-col gap-4">
         <div>
-          <p className="text-custom-secondary text-[0.65rem] font-semibold tracking-[0.15em] uppercase">
-            Dashboard
-          </p>
+          <p className="text-custom-secondary text-[0.65rem] font-semibold tracking-[0.15em] uppercase"></p>
           <h1 className="text-custom-text-main mt-1 text-3xl leading-snug font-light">
             {getGreeting()}, <span className="font-normal">{firstName}</span>
           </h1>
@@ -425,23 +428,31 @@ export default async function DashboardPage() {
           </div>
         ) : (
           <div className="flex flex-col gap-2">
-            {recentLogs.map((log: { id: string; workoutName: string; date: Date; totalSessionVolume: number; durationMinutes: number | null }) => {
-              const planId = planMap.get(log.workoutName);
-              return (
-                <RecentActivityItem
-                  key={log.id}
-                  workoutName={log.workoutName}
-                  formattedDate={formatDate(log.date)}
-                  formattedVolume={formatVolume(log.totalSessionVolume)}
-                  formattedDuration={
-                    log.durationMinutes != null
-                      ? formatDuration(log.durationMinutes)
-                      : null
-                  }
-                  href={planId ? `/workouts/${planId}` : undefined}
-                />
-              );
-            })}
+            {recentLogs.map(
+              (log: {
+                id: string;
+                workoutName: string;
+                date: Date;
+                totalSessionVolume: number;
+                durationMinutes: number | null;
+              }) => {
+                const planId = planMap.get(log.workoutName);
+                return (
+                  <RecentActivityItem
+                    key={log.id}
+                    workoutName={log.workoutName}
+                    formattedDate={formatDate(log.date)}
+                    formattedVolume={formatVolume(log.totalSessionVolume)}
+                    formattedDuration={
+                      log.durationMinutes != null
+                        ? formatDuration(log.durationMinutes)
+                        : null
+                    }
+                    href={planId ? `/workouts/${planId}` : undefined}
+                  />
+                );
+              },
+            )}
           </div>
         )}
       </section>

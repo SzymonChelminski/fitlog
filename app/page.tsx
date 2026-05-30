@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { getUser } from '@/lib/supabase/auth';
 import { GridBackground } from '@/components/GridBackground';
 import { FaDumbbell } from 'react-icons/fa6';
-import { MdOutlineBolt } from 'react-icons/md';
 import { IoMdListBox } from 'react-icons/io';
 import { LuTimer } from 'react-icons/lu';
 import { PiChartLineUpBold } from 'react-icons/pi';
@@ -41,11 +40,6 @@ export default async function Home() {
       <GridBackground />
 
       <header className="flex flex-col items-center gap-6 text-center select-none">
-        <span className="border-custom-secondary/25 bg-custom-secondary/[0.07] text-custom-secondary inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-[0.68rem] font-semibold tracking-[0.16em] uppercase">
-          <MdOutlineBolt className="size-3.5" />
-          Kinetic Observatory
-        </span>
-
         <h1 className="leading-[1.15]">
           <span className="font-display text-custom-text-main block text-[2.2rem] font-black tracking-[0.01em] sm:text-4xl md:text-[4.5rem] lg:text-[5.5rem]">
             Train smarter.
@@ -86,30 +80,29 @@ export default async function Home() {
         ))}
       </section>
 
-      <section
-        aria-label="Get started"
-        className="mx-auto mt-auto flex w-full max-w-sm flex-col gap-3 pt-12 sm:max-w-none sm:flex-row sm:items-center sm:justify-center"
-      >
-        <Link href="/auth/register" className="w-full sm:w-auto">
-          <Button
-            className="bg-custom-primary w-full cursor-pointer rounded-full px-12 py-7 text-base font-medium tracking-[0.12em] text-white transition-opacity hover:opacity-90 sm:w-auto"
-            size="lg"
-          >
-            CREATE ACCOUNT
-          </Button>
-        </Link>
+      <section aria-label="Get started" className="mt-12">
+        <div className="mx-auto flex w-full max-w-sm flex-col justify-center gap-3 sm:w-fit sm:flex-row sm:gap-4">
+          <Link href="/auth/register" className="w-full sm:w-auto">
+            <Button
+              className="bg-custom-primary w-full cursor-pointer rounded-full px-12 py-7 text-base font-medium tracking-[0.12em] text-white transition-opacity hover:opacity-90 sm:w-auto"
+              size="lg"
+            >
+              CREATE ACCOUNT
+            </Button>
+          </Link>
 
-        <Link href="/auth/login" className="w-full sm:w-auto">
-          <Button
-            variant="ghost"
-            className="border-custom-text-main/50 text-custom-text-main hover:border-custom-text-main/70 w-full cursor-pointer rounded-full border bg-black/[0.07] px-12 py-7 text-base font-medium tracking-[0.12em] transition-colors hover:bg-black/[0.12] sm:w-auto dark:bg-white/[0.07] dark:hover:bg-white/[0.12]"
-            size="lg"
-          >
-            LOG IN
-          </Button>
-        </Link>
+          <Link href="/auth/login" className="w-full sm:w-auto">
+            <Button
+              variant="ghost"
+              className="border-custom-text-main/50 text-custom-text-main hover:border-custom-text-main/70 w-full cursor-pointer rounded-full border bg-black/[0.07] px-12 py-7 text-base font-medium tracking-[0.12em] transition-colors hover:bg-black/[0.12] sm:w-auto dark:bg-white/[0.07] dark:hover:bg-white/[0.12]"
+              size="lg"
+            >
+              LOG IN
+            </Button>
+          </Link>
+        </div>
 
-        <p className="text-custom-text-muted/50 text-center text-[0.68rem] tracking-widest uppercase sm:hidden">
+        <p className="text-custom-text-muted/50 mt-3 text-center text-[0.68rem] tracking-widest uppercase sm:hidden">
           Track · Analyze · Evolve
         </p>
       </section>
