@@ -8,6 +8,7 @@ A minimalist, high-performance fitness tracking application designed to help you
 - **Language:** TypeScript (Strict mode)
 - **Database & Auth:** Supabase (PostgreSQL)
 - **ORM:** Prisma 6
+- **Validation**: Zod
 - **Styling:** Tailwind CSS 4 + shadcn/ui
 - **Visualization:** MUI X Charts
 
