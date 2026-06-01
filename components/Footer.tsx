@@ -35,6 +35,9 @@ export default function Footer() {
             <p className="max-w-[200px] text-sm leading-relaxed text-custom-text-muted/55 sm:max-w-[240px] sm:text-base">
               Precision performance tracking for the modern athlete.
             </p>
+            <p className="-mt-2 text-xs text-custom-text-muted/55">
+              Powered by ExerciseDB / AscendAPI
+            </p>
           </div>
 
           <nav aria-label="Footer navigation" className="grid grid-cols-2 gap-8 sm:gap-12 md:gap-16">
