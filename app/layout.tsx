@@ -26,7 +26,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`dark ${inter.className} ${orbitron.variable}`} suppressHydrationWarning>
-      <body className="flex min-h-dvh flex-col" suppressHydrationWarning>
+      <body className="flex min-h-screen flex-col" suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
@@ -35,9 +35,11 @@ export default function RootLayout({
         >
           <EmotionRegistry>
             <TooltipProvider>
-              <Navbar />
-              <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col">
-                {children}
+              <div className="flex min-h-screen flex-col pb-8">
+                <Navbar />
+                <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col">
+                  {children}
+                </div>
               </div>
               <Footer />
             </TooltipProvider>
